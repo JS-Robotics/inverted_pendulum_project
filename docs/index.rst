@@ -39,7 +39,9 @@ Now lets try a coding block
    :maxdepth: 2
    :caption: Contents:
 
-
+   ./chapters/01_introduction
+   ./chapters/02_hardware
+   ./chapters/00_misc
 
 Indices and tables
 ==================

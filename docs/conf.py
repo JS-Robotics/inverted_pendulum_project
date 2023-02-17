@@ -7,8 +7,8 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'Inverted Pendulum'
-copyright = '2023, Sondre Johnsen'
-author = 'Sondre Johnsen'
+copyright = '2023, ICraveSleep'
+author = 'ICraveSleep'
 release = 'v0.1'
 
 # -- General configuration ---------------------------------------------------
@@ -31,3 +31,9 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
+
+# Customs
+# CSS custom: https://stackoverflow.com/questions/62626722/removing-borders-from-a-table-in-sphinx-documentation
+html_css_files = [
+    'css/custom.css',
+]
