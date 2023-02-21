@@ -7,6 +7,30 @@ This is the hardware page
 Odrive v3.6
 **************
 
+.. container:: twocol
+
+   .. container:: leftside
+
+      The ODrive is an open-source motor controller designed for high-performance robotics and automation applications.
+      It is capable of driving two brushless DC motors simultaneously and provides precise position and velocity control.
+
+      One of the key features of the ODrive is its high performance. It can provide up to 100A of current and 56V of voltage to each motor,
+      allowing for high torque and speed capabilities. It also has a closed-loop control system that uses encoder feedback to ensure accurate position and velocity control.
+
+   .. container:: rightside
+
+      .. figure:: ../figures/02_hardware/OdriveImage.jpeg
+         :alt: AMT21
+         :scale: 22%
+
+|
+
+|
+
+|
+
+The ODrive is also designed to be easy to use and integrate into existing systems. It features a USB interface for
+easy configuration and control, and it can be programmed using a variety of programming languages and environments, including Python, Arduino, and ROS.
 
 
 AMT213F-V
@@ -15,7 +39,9 @@ AMT213F-V
 
    .. container:: leftside
 
-      The absolute encoder AMT213F-V is part of CUI Device's AMT21-series which is a series of compact and robust absolute encoders that provide high accuracy and resolution, making it suitable for a wide range of industrial applications. It uses a non-contact magnetic sensing technology, which ensures high reliability and durability in harsh environments.
+      The absolute encoder AMT213F-V is part of CUI Device's AMT21-series which is a series of compact and robust
+      absolute encoders that provide high accuracy and resolution, making it suitable for a wide range of industrial applications.
+      It uses a non-contact magnetic sensing technology, which ensures high reliability and durability in harsh environments.
 
    .. container:: rightside
 
@@ -75,3 +101,9 @@ bob
 
 
 New table a
+
+.. container:: .twocol
+
+    asdsada
+
+    asdasdsa
