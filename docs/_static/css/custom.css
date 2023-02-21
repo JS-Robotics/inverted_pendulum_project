@@ -1,9 +1,15 @@
 div.leftside {
-    width: 414px;
+    /* width: 414px;
     padding: 0px 3px 0px 0px;
+    float: left; */
+    width: 60%;
+    padding: 0px 70px 0px 0px;
     float: left;
 }
 
 div.rightside {
-    margin-left: 425px;
+    /*margin-left: 425px */;
+    padding: 0px 100px 0px 0px; /* shift y, shift ?, add underspace,  */
+    margin-left: 40%;
+    float: outside;
 }
