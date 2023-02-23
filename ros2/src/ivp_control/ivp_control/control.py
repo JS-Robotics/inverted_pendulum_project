@@ -1,5 +1,5 @@
 def main():
-    print('Hi from control.')
+    print('Hi from ivp_control.')
 
 
 if __name__ == '__main__':

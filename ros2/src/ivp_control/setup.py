@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = 'control'
+package_name = 'ivp_control'
 
 setup(
     name=package_name,
@@ -13,14 +13,14 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='sondre',
-    maintainer_email='moosetive@gmail.com',
+    maintainer='ICraveSleep',
+    maintainer_email='todo@mail.com',
     description='TODO: Package description',
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'control = control.control:main'
+            'control = ivp_control.control:main'
         ],
     },
 )
