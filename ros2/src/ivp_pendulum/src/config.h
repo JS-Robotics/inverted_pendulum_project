@@ -14,7 +14,7 @@ static constexpr float timer_sleep = 0.02f;
 namespace EncoderConfig{
 static constexpr AMT21TurnType kEncoderTurnType = AMT21TurnType::kSingleTurn;
 static constexpr AMT21Resolution kEncoderResolution = AMT21Resolution::k14Bit;
-static constexpr AMT21BaudRate kEncoderBaudRate = AMT21BaudRate::k115200;
+static constexpr AMT21BaudRate kEncoderBaudRate = AMT21BaudRate::k2000000;
 }
 
 #endif //IVP_PENDULUM_SRC_CONFIG_H_

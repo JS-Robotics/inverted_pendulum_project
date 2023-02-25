@@ -18,10 +18,11 @@ class Pendulum : public rclcpp::Node {
 
   void RunOnce();
   void Configure();
+  bool NodeOk();
 
  private:
   Amt21Driver* encoder_;
-  bool stop_node;
+  bool stop_node_;
 };
 
 #endif //INVERTED_PENDULUM_PROJECT_ROS2_SRC_IVP_PENDULUM_SRC_PENDULUM_H_

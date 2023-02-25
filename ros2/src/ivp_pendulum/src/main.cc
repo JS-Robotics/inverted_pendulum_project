@@ -9,7 +9,7 @@ int main(int argc, char **argv) {
   rclcpp::init(argc, argv);
   auto node = std::make_shared<Pendulum>();
   node->Configure();
-  while (rclcpp::ok() && !stop_node) {
+  while (rclcpp::ok() && !node->NodeOk()) {
     node->RunOnce();
     rclcpp::spin_some(node);
   }
