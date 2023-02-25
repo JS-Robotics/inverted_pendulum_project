@@ -7,16 +7,21 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "config.h"
+#include "amt21_driver.h"
 #include <chrono>
 
 class Pendulum : public rclcpp::Node {
  public:
-  Pendulum() : Node("ThisIsNodeName") {};
+  Pendulum();
 
-  ~Pendulum() = default;
+  ~Pendulum();
 
   void RunOnce();
+  void Configure();
 
+ private:
+  Amt21Driver* encoder_;
+  bool stop_node;
 };
 
 #endif //INVERTED_PENDULUM_PROJECT_ROS2_SRC_IVP_PENDULUM_SRC_PENDULUM_H_

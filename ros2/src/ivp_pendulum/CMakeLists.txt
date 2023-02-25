@@ -9,20 +9,23 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(amt21_driver REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
 add_library(config_header src/config.h)
+target_link_libraries(config_header amt21_driver)
 set_target_properties(config_header PROPERTIES LINKER_LANGUAGE CXX)
+
 target_include_directories(config_header PUBLIC
         "${CMAKE_CURRENT_SOURCE_DIR}"
         "${CMAKE_SOURCE_DIR}/src"
         )
 
-add_library(IvpPendulum src/ivp_pendulum.cc)
+add_library(IvpPendulum src/ivp_pendulum.cc include/ivp_pendulum/ivp_pendulum.h)
 ament_target_dependencies(IvpPendulum rclcpp std_msgs)
-target_link_libraries(IvpPendulum config_header)
+target_link_libraries(IvpPendulum config_header amt21_driver)
 
 add_executable(ivp_pendulum src/main.cc)
 target_link_libraries(ivp_pendulum IvpPendulum)
