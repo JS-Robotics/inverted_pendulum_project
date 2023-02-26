@@ -1,3 +1,7 @@
+#######################################
+# Created by ICraveSleep on 23.02.23. #
+#######################################
+
 cmake_minimum_required(VERSION 3.8)
 project(ivp_pendulum)
 
@@ -30,13 +34,19 @@ target_link_libraries(IvpPendulum config_header amt21_driver)
 add_executable(ivp_pendulum src/main.cc)
 target_link_libraries(ivp_pendulum IvpPendulum)
 
+
+add_executable(pendulum_sampler tools/pendulum_data/data_sampler.cpp)
+target_link_libraries(pendulum_sampler amt21_driver)
+
 target_include_directories(ivp_pendulum PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 target_compile_features(ivp_pendulum PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 
-install(TARGETS ivp_pendulum
+install(TARGETS ivp_pendulum pendulum_sampler
   DESTINATION lib/${PROJECT_NAME})
+
+install(DIRECTORY launch DESTINATION share/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
