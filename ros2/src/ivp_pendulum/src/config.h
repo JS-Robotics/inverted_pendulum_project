@@ -7,14 +7,19 @@
 
 #include "amt21_driver.h"
 
-namespace PendulumConfig {
-static constexpr double timer_sleep = 0.02f;
-}
-
-namespace EncoderConfig{
+namespace EncoderConfig {
 static constexpr AMT21TurnType kEncoderTurnType = AMT21TurnType::kSingleTurn;
 static constexpr AMT21Resolution kEncoderResolution = AMT21Resolution::k14Bit;
 static constexpr AMT21BaudRate kEncoderBaudRate = AMT21BaudRate::k115200;
 }
+
+namespace PendulumConfig {
+static constexpr double timer_sleep = 0.02f;
+}
+
+namespace PublisherConfig {
+static constexpr char kTopic[6] = "topic";
+}
+
 
 #endif //IVP_PENDULUM_SRC_CONFIG_H_

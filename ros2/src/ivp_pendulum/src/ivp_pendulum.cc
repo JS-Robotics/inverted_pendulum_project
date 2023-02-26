@@ -16,7 +16,7 @@ Pendulum::~Pendulum() {
 
 void Pendulum::Configure() {
 
-  publisher_ = this->create_publisher<std_msgs::msg::UInt16>("position", 10);
+  publisher_ = this->create_publisher<std_msgs::msg::UInt16>(PublisherConfig::kTopic, 10);
 
   std::string usb_port = "/dev/ttyUSB0";
   encoder_ = new Amt21Driver(usb_port,
