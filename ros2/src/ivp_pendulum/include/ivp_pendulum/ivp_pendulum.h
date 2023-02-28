@@ -6,7 +6,7 @@
 #define INVERTED_PENDULUM_PROJECT_ROS2_SRC_IVP_PENDULUM_SRC_PENDULUM_H_
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/u_int16.hpp"
+#include "geometry_msgs/msg/vector3.hpp"
 
 #include "config.h"
 #include "amt21_driver.h"
@@ -22,12 +22,19 @@ class Pendulum : public rclcpp::Node {
   void Configure();
   void CleanUp();
   bool NodeOk();
+  void Sleep();
 
  private:
-  Amt21Driver* encoder_;
+  Amt21Driver *encoder_;
   bool stop_node_;
-  rclcpp::Publisher<std_msgs::msg::UInt16>::SharedPtr publisher_;
-  std_msgs::msg::UInt16 message_ = std_msgs::msg::UInt16();
+  rclcpp::Publisher<geometry_msgs::msg::Vector3>::SharedPtr publisher_;
+  geometry_msgs::msg::Vector3 message_ = geometry_msgs::msg::Vector3();
+  float pos_old_;
+  float pos_filtered_;
+  float dt_;
+  std::chrono::time_point<std::chrono::steady_clock> t_start_;
+  std::chrono::time_point<std::chrono::steady_clock> t_end_;
+
 };
 
 #endif //INVERTED_PENDULUM_PROJECT_ROS2_SRC_IVP_PENDULUM_SRC_PENDULUM_H_

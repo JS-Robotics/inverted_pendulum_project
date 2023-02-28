@@ -34,6 +34,7 @@ int main(int argc, char **argv) {
   while (rclcpp::ok() && !node->NodeOk()) {
     node->RunOnce();
     executor.spin_node_some(node);
+    node->Sleep();
   }
   rclcpp::shutdown();
   return 0;

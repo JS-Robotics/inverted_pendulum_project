@@ -2,11 +2,15 @@
 // Created by ICraveSleep on 23.02.23.
 //
 
-#include "../include/ivp_pendulum/ivp_pendulum.h"
+#include "ivp_pendulum/ivp_pendulum.h"
 
 Pendulum::Pendulum() : Node("ThisIsNodeName") {
   encoder_ = nullptr;
   stop_node_ = false;
+  message_.z = 0.0f;
+  pos_old_ = 0.0f;
+  pos_filtered_ = 0.0f;
+  dt_ = static_cast<float>(PendulumConfig::timer_sleep);
 }
 
 Pendulum::~Pendulum() {
@@ -16,9 +20,9 @@ Pendulum::~Pendulum() {
 
 void Pendulum::Configure() {
 
-  publisher_ = this->create_publisher<std_msgs::msg::UInt16>(PublisherConfig::kTopic, 10);
+  publisher_ = this->create_publisher<geometry_msgs::msg::Vector3>(PublisherConfig::kTopic, rclcpp::SensorDataQoS());
 
-  std::string usb_port = "/dev/ttyUSB0";
+  std::string usb_port = EncoderConfig::kUsbPort;
   encoder_ = new Amt21Driver(usb_port,
                              EncoderConfig::kEncoderResolution,
                              EncoderConfig::kEncoderBaudRate,
@@ -29,28 +33,23 @@ void Pendulum::Configure() {
     RCLCPP_ERROR(this->get_logger(), "Not able to access port: %s", usb_port.c_str());
   }
 
-//  RCLCPP_DEBUG(this->get_logger(), "DEBUG PRINT");
-//  RCLCPP_INFO(this->get_logger(), "INFO PRINT");
-//  RCLCPP_WARN(this->get_logger(), "WARN PRINT");
-//  RCLCPP_ERROR(this->get_logger(), "ERROR PRINT");
-
   RCLCPP_INFO(this->get_logger(), "Connected to encoder with error code: %u", encoder_->GetEncoderError());
-
 }
 
 void Pendulum::RunOnce() {
-  std::chrono::time_point t_start = std::chrono::steady_clock::now();
-  uint16_t encoder_value = encoder_->GetEncoderPosition();
-  message_.data = encoder_value;
-  publisher_->publish(message_);
-  std::chrono::time_point t_stop = std::chrono::steady_clock::now();
-  auto t_duration = std::chrono::duration<double>(t_stop - t_start);
-//  std::cout << "Request time: " << t_duration.count() << "Encoder: " << encoder_value << std::endl;
-  if (t_duration.count() < PendulumConfig::timer_sleep) {
+  t_start_ = std::chrono::steady_clock::now();  //Begin execution timer
 
-    std::this_thread::sleep_for(std::chrono::duration<double>(PendulumConfig::timer_sleep - t_duration.count()));
+  float encoder_value = encoder_->GetEncoderAngle();
+  if (encoder_->ChecksumFailed()) {
+    RCLCPP_WARN(this->get_logger(), "Checksum failed");
+    publisher_->publish(message_);  // If checksum fails just republish previous message. Not much difference due to sampling.
   } else {
-    RCLCPP_WARN(this->get_logger(), "Overtime: %f", t_duration.count());
+    pos_filtered_ = PendulumConfig::alpha * encoder_value + ((1 - PendulumConfig::alpha) * pos_filtered_);
+    float vel = (pos_filtered_ - pos_old_) / dt_;
+    pos_old_ = pos_filtered_;
+    message_.x = pos_filtered_;
+    message_.y = vel;
+    publisher_->publish(message_);
   }
 
 }
@@ -67,5 +66,19 @@ void Pendulum::CleanUp() {
     delete encoder_;
     encoder_ = nullptr;
     RCLCPP_INFO(this->get_logger(), "Deleted encoder object");
+  }
+}
+
+void Pendulum::Sleep() {
+  t_end_ = std::chrono::steady_clock::now();
+  auto t_duration = std::chrono::duration<double>(t_end_ - t_start_);
+  RCLCPP_DEBUG(this->get_logger(), "Loop time: %f[s]", t_duration.count());
+  if (t_duration.count() < PendulumConfig::timer_sleep) {
+    std::this_thread::sleep_for(std::chrono::duration<double>(PendulumConfig::timer_sleep - t_duration.count()));
+  } else {
+    RCLCPP_WARN(this->get_logger(),
+                "Loop time: %f[ms], Overtime: %f[s] ",
+                t_duration.count() * 1000,
+                PendulumConfig::timer_sleep - t_duration.count());
   }
 }
