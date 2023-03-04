@@ -6,7 +6,6 @@ import csv
 import matplotlib.pyplot as plt
 import numpy as np
 
-
 def read_file(file_name):
     with open(file_name) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')

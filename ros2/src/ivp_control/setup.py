@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'control = ivp_control.control:main'
+            'ivp_control = ivp_control.main:main'  # executable_name --> set to file nem
         ],
     },
 )

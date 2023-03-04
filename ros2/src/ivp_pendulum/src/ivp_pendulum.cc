@@ -2,6 +2,7 @@
 // Created by ICraveSleep on 23.02.23.
 //
 
+// https://electronics.stackexchange.com/questions/410350/how-to-handle-rotary-encoder-overflow
 #include "ivp_pendulum/ivp_pendulum.h"
 
 Pendulum::Pendulum() : Node("ThisIsNodeName") {
@@ -39,17 +40,34 @@ void Pendulum::Configure() {
 void Pendulum::RunOnce() {
   t_start_ = std::chrono::steady_clock::now();  //Begin execution timer
 
-  float encoder_value = encoder_->GetEncoderAngle();
+  float pos = encoder_->GetEncoderAngle();
+  bool overflow = false;
+  float value_overflow = pos - pos_old_;
+
+  if (abs(value_overflow) > kOverflowDiffThreshold) {
+    overflow = true;
+  }
+
   if (encoder_->ChecksumFailed()) {
     RCLCPP_WARN(this->get_logger(), "Checksum failed");
-    publisher_->publish(message_);  // If checksum fails just republish previous message. Not much difference due to sampling.
+    publisher_->publish(message_);  // If checksum fails just republish previous message. Not much difference due to sampling rate.
   } else {
-    pos_filtered_ = PendulumConfig::alpha * encoder_value + ((1 - PendulumConfig::alpha) * pos_filtered_);
-    float vel = (pos_filtered_ - pos_old_) / dt_;
-    pos_old_ = pos_filtered_;
-    message_.x = pos_filtered_;
-    message_.y = vel;
+    float vel;
+    if (overflow) {
+      if (value_overflow < 0) {
+        vel = ((pos + 2.f * kPi) - pos_old_) / dt_;
+      } else {
+        vel = ((pos - 2.f * kPi) - pos_old_) / dt_;
+      }
+    } else {
+      vel = (pos - pos_old_) / dt_;
+    }
+    pos_filtered_ = PendulumConfig::alpha * pos + ((1 - PendulumConfig::alpha) * pos_filtered_);
+    vel_filtered_ = PendulumConfig::alpha * vel + ((1 - PendulumConfig::alpha) * vel_filtered_);
+    message_.x = -1.f * pos_filtered_ + (2.f * kPi); // -1 and 2pi to Make CCW positive direction
+    message_.y = -1.f * vel_filtered_; // -1 to Make CCW positive direction
     publisher_->publish(message_);
+    pos_old_ = pos;
   }
 
 }

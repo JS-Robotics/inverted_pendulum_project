@@ -31,10 +31,13 @@ class Pendulum : public rclcpp::Node {
   geometry_msgs::msg::Vector3 message_ = geometry_msgs::msg::Vector3();
   float pos_old_;
   float pos_filtered_;
+  float vel_filtered_;
   float dt_;
   std::chrono::time_point<std::chrono::steady_clock> t_start_;
   std::chrono::time_point<std::chrono::steady_clock> t_end_;
 
+  static constexpr float kPi = 3.14159265359;
+  static constexpr float kOverflowDiffThreshold = 5.5;
 };
 
 #endif //INVERTED_PENDULUM_PROJECT_ROS2_SRC_IVP_PENDULUM_SRC_PENDULUM_H_

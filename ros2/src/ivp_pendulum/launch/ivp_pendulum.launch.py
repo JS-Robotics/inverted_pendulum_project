@@ -14,9 +14,9 @@ logger.setLevel(logging.INFO)
 
 def generate_launch_description():
     nodes = []
-    log_level = "DEBUG"  # [DEBUG, INFO, WARN, ERROR]
+    log_level = "INFO"  # [DEBUG, INFO, WARN, ERROR]
     package_name = "ivp_pendulum"
-    namespace = "placeholder"
+    namespace = "ivp"
     executable = "ivp_pendulum"
     node_name = "ivp_pendulum_test"
     node = Node(

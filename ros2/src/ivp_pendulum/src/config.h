@@ -10,7 +10,7 @@
 namespace EncoderConfig {
 static constexpr AMT21TurnType kEncoderTurnType = AMT21TurnType::kSingleTurn;
 static constexpr AMT21Resolution kEncoderResolution = AMT21Resolution::k14Bit;
-static constexpr AMT21BaudRate kEncoderBaudRate = AMT21BaudRate::k2000000;
+static constexpr AMT21BaudRate kEncoderBaudRate = AMT21BaudRate::k115200;
 static constexpr char kUsbPort[] = "/dev/ttyUSB0";
 }
 
