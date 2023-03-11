@@ -1,4 +1,4 @@
-from ivp_control.control import Control
+from ivp_cart.cart import Control
 import rclpy
 import time
 
@@ -19,10 +19,8 @@ def main(args=None):
             control_node.run_once()
             executor.spin_once()
             time.sleep(0.001)
-
     except KeyboardInterrupt:
         print('interrupted')
-
     finally:
         print("Finally executed")
 

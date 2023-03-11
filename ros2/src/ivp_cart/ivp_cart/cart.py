@@ -3,7 +3,7 @@ from rclpy.node import Node
 from rclpy import qos
 from geometry_msgs.msg import Vector3
 
-from cart_control import CartControl
+from ivp_cart.odrive_interface import CartControl
 
 
 class Control(Node):
