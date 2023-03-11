@@ -1,8 +1,4 @@
 from setuptools import setup
-import os
-
-# Disable build warning: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
-os.environ["PYTHONWARNINGS"] = "ignore:setup.py install is deprecated::setuptools.command.install"
 
 package_name = 'ivp_cart'
 

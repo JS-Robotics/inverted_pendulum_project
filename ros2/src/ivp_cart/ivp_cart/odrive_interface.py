@@ -139,3 +139,21 @@ class CartControl:
         :return: True if the device is connected.
         """
         return self.isConnected
+
+    def set_pid_parameters(self):
+        """
+        Set new PID parameters in order to reduce motor jitter during homing sequence.
+        """
+        self.drive.axis0.controller.config.pos_gain = 23  # 15
+        time.sleep(0.1)
+        self.drive.axis0.controller.config.vel_gain = 0.05  # 0.1666666716337204
+        time.sleep(0.1)
+        self.drive.axis0.controller.config.vel_integrator_gain = 0.015  # 0.3333333432674408
+        time.sleep(0.1)
+
+    def get_estimated_pos(self):
+        """
+        Get the estimated position in number of turns
+        :return: Current number of turns [turns]
+        """
+        return self.drive.axis0.encoder.pos_estimate
