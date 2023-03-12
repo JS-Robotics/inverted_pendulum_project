@@ -9,6 +9,14 @@ from std_msgs.msg import UInt8
 # from ivp_cart.odrive_interface import CartControl
 from ivp_cart.odrive_interface import CartControl
 
+from enum import IntEnum
+
+
+class States(IntEnum):
+    CONFIGURED = 0
+    ACTIVE = 1
+    HEARTBEAT_ERROR = 2
+
 
 class Control(Node):
 
@@ -31,28 +39,35 @@ class Control(Node):
                                          durability=qos.QoSDurabilityPolicy.TRANSIENT_LOCAL)
         self.state: int = 0
         self.publish_state = False
+        self.soft_end_limit = 5.0  # 6
 
     def run_once(self):
         self.start_time = time.time()
-        self.turn_message.data = 1.23
-        # self.turn_message.data = -1 * self.cart_control.get_estimated_pos()  # -1 to make right positive direction TODO Turn back for motor
+        # self.turn_message.data = 1.23
+
+        self.turn_message.data = -1 * self.cart_control.get_estimated_pos()  # -1 to make right positive direction TODO Turn back for motor
         self._turn_publisher.publish(self.turn_message)
         duration = time.time() - self.heart_beat_threshold
         if duration > self.heart_beat:
             self.torque = 0
-            self.set_state(1)
+            self.set_state(States.HEARTBEAT_ERROR)
             if self.publish_state:
                 message = UInt8()
-                message.data = 1
+                message.data = States.HEARTBEAT_ERROR
                 self._status_publisher.publish(message)
                 self.publish_state = False
         else:
-            self.set_state(2)
+            self.set_state(States.ACTIVE)
             if self.publish_state:
                 message = UInt8()
-                message.data = 2
+                message.data = States.ACTIVE
                 self._status_publisher.publish(message)
                 self.publish_state = False
+
+        if abs(self.turn_message.data) > self.soft_end_limit:  # Perform soft emergency stop check
+            self.torque = 0
+
+        self.cart_control.set_torque(self.torque)
 
     def sleep(self):
         self.end_time = time.time()
@@ -61,9 +76,9 @@ class Control(Node):
             time.sleep(self.loop_time - duration)
         else:
             self.get_logger().warn(f"Time overflow: "
-                                   f"Target time: {self.loop_time},"
-                                   f" Loop time: {duration}, "
-                                   f"Overflow: {duration - self.loop_time}")
+                                   f"Target time: {round(1000 * self.loop_time, 4)}[ms],"
+                                   f" Loop time: {round(1000 * duration, 4)}[ms], "
+                                   f"Overflow: {round(1000 * (duration - self.loop_time), 4)}[ms]")
 
     def configure(self):
         self._torque_subscriber = self.create_subscription(Float32,
@@ -74,16 +89,17 @@ class Control(Node):
         self._turn_publisher = self.create_publisher(Float32, 'turns', qos.qos_profile_sensor_data)
         self._status_publisher = self.create_publisher(UInt8, 'status_cart', self.status_qos)
         self.heart_beat = time.time()  # Init timer on init in order to avoid None type error
-        self.state = 0
+        self.state = States.CONFIGURED
 
     def prepare_motor(self):
         self.cart_control.connect()
         self.cart_control.set_pid_parameters()
         self.cart_control.calibrate()
         self.cart_control.homing()
+        self.cart_control.set_torque_control()
 
     def torque_callback(self, torque: Float32):
-        self.torque = torque.data
+        self.torque = -1 * torque.data  # -1 to make right direction positive
         self.heart_beat = time.time()
 
     def set_state_idle(self):

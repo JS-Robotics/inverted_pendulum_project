@@ -25,3 +25,10 @@ Simply export the following enrivonment variable
 1. Open Pycharm from terminal where ros2 has been sourced
 2. Set the workspace folder's src folder to source root
 3. Add the following path to the project structure: `/opt/ros/humble/local/lib/python3.10/dist-packages`
+
+
+## Testing CLI publishers ##
+
+* Heartbeat testing:
+
+        ros2 topic pub /ivp/torque_setpoint std_msgs/msg/Float32 '{data: 0.017}' -r 15

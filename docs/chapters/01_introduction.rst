@@ -52,3 +52,5 @@ Soft stop maximum distance = # Soft max = 6 turns
 
 Pully diamter = 18.5
 Pully + belt = 20.5
+
+Dead zone compensation: 0.015 [Nm]
