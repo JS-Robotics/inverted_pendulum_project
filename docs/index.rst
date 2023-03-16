@@ -35,12 +35,17 @@ Now lets try a coding block
    int b = 1;
    float c = static_cast<float>(b);
 
+
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
+   :numbered:
    :caption: Contents:
 
    ./chapters/01_introduction
    ./chapters/02_hardware
+   ./chapters/03_software
+   ./chapters/04_simulation
+   ./chapters/05_control
    ./chapters/00_misc
 
 Indices and tables

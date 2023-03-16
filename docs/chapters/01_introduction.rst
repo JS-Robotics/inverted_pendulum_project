@@ -1,7 +1,26 @@
 Introduction
 ============
 
-This is tetghbjkhrfkjas
+The inverted pendulum on a cart problem is a classical example in control theory and robotics, which involves
+controlling the motion of a pendulum attached to a cart that moves on a horizontal surface.
+The goal is to keep the pendulum upright by moving the cart back and forth in response to the pendulum's motion.
+
+The system consists of a cart with a motorized wheel that can move along a horizontal surface and a pendulum attached
+to the cart through a hinge joint. The pendulum is free to rotate around the hinge joint.
+The motion of the cart is controlled by applying a force to the cart.
+
+The dynamics of the system can be modeled using the principles of mechanics, and the equations of motion can be derived
+using Newtonian or Lagrangian mechanics. The equations of motion describe the motion of the cart and the pendulum
+in response to the applied force.
+
+This problem is a challenging control problem because the pendulum is an unstable system, meaning that
+small disturbances can cause the pendulum to fall over. As a result, various control strategies have been proposed
+to stabilize the pendulum, such as proportional-derivative (PD) control,
+linear-quadratic regulator (LQR) control, and model predictive control (MPC).
+
+The inverted pendulum on a cart problem is a classic example because it highlights the importance of
+feedback control in stabilizing an unstable system. It has been used as a benchmark problem in control
+theory and robotics, and it has also been implemented in various control applications, such as self-balancing robots and segways.
 
 Section
 -------
