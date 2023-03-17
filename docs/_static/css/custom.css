@@ -24,3 +24,20 @@ div.rightside {
 .align-center {
     text-align: center;
 }
+
+.math {
+    text-align: left;
+}
+.eqno {
+    float: right;
+}
+
+div.math p:not(:first-child) {
+    text-align: right;
+    font-size: 90%;
+    margin-top: 0.2em;
+}
+
+div.math p:not(:first-child)::before {
+    content: "(" attr(data-equation-number) ") ";
+}

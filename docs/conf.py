@@ -19,15 +19,18 @@ release = 'v0.1'
 # Math support> https://sphinx-rtd-trial.readthedocs.io/en/latest/ext/math.html#module-sphinx.ext.mathbase
 # Read the docs theme: https://sphinx-rtd-theme.readthedocs.io/en/stable/index.html
 # Requires to install rtd theme: pip install sphinx_rtd_theme
-extensions = ['sphinx_rtd_theme',
+extensions = [
+              'sphinx_rtd_theme',
               'sphinx.ext.mathjax',
               #'sphinx.ext.numfig'
               ]
 
+
 # Add figure numbering
 numfig = True
-math_number_all =True
+#math_number_all =True
 math_numfig = True
+math_eqref_format = 'Equation. ({number})'
 
 
 templates_path = ['_templates']

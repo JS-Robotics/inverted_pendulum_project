@@ -73,6 +73,8 @@ From the FBD and KD displayed of the pole in figure above, multiple equations ca
 by applying Newton’s second law. First the horizontal forces are considered, where the blow equation derived.
 
 .. math::
+    :label: eq:1
+
     m_p\ddot{x}_{px} = −R_x
 
 It is beneficial to be able to describe the linear acceleration of the pendulum in the horizontal
@@ -139,14 +141,28 @@ Finally the pendulums acceleration along the X-axis can be described in relation
 
 
 .. math::
-    :name: eq:6
+    :label: eq:2
 
     \ddot{x}_{px} = \ddot{x}_{cx} + \ddot{r}_{px} = \ddot{x}_{cx} +  L\ddot{\theta} \cos (\theta) - L\dot{\theta}^2 \sin (\theta)
 
 
-Applying the first pole equation, the following substitution is performed :eq:`eq:6`
+Substituting :eq:`eq:2` into :eq:`eq:1` Yields
 
+.. math::
 
+    m_p\ddot{x}_{cx} + m_pL\ddot{\theta}\cos(\theta) - m_pL\dot{\theta}^2\sin(\theta) = −R_x
+
+Then by substituting the above equation with, the variable :math:`Rx` is eliminated.
+
+.. math::
+
+    m_c\ddot{x}_{cx} = F_m - F_f - m_p\ddot{x}_{cx} - m_pL\ddot{\theta}\cos(\theta) + m_pL\dot{\theta}^2\sin(\theta)
+
+The equation is then simplified
+
+.. math::
+
+    (m_c + m_p)\ddot{x}_{cx} + m_pL\ddot{\theta}\cos(\theta) - m_pL\dot{\theta}^2\sin(\theta) = F_m - F_f
 
 Lagrangian Approach
 -------------------
