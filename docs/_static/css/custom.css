@@ -20,3 +20,7 @@ div.rightside {
     -webkit-column-count: 2;
     -webkit-column-gap: 20px;
 }
+
+.align-center {
+    text-align: center;
+}

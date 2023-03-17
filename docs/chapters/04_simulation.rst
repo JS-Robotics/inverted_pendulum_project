@@ -28,12 +28,125 @@ and different control strategies can be tested.
 Pole Cart Model
 ***************
 
-asdsadd
+asdsadd hello hei
+
+.. container:: align-center
+
+    .. image:: ../figures/04_simulation/cart_pole.svg
+        :scale: 150%
+
+|
 
 Newtonian Approach
 ------------------
+|
 
-asdasdsadsadasd
+.. container:: align-center
+
+    .. figure:: ../figures/04_simulation/CartFBDKD.svg
+        :scale: 150%
+
+        Cart Free body diagram (FBD) and kinetic diagram (KD)
+
+From the FBD and KD displayed of the cart in the above figure, the following equation is derived
+applying Newton’s second law. Since the cart is constrained to only be able to move along
+the X-axis, the horizontal forces are ignored as it will not give any useful information.
+Further, the constraint applied means that the cart is not able to rotate. Specifically, :math:`\ddot{\theta}` is
+zero and is constant.
+
+.. math::
+    m_c\ddot{x}_{cx} = F_m - F_f + R_x
+
+.. math::
+    F_f = b\dot{x}
+
+|
+
+.. container:: align-center
+
+    .. figure:: ../figures/04_simulation/PoleFBDKD.svg
+        :scale: 115%
+
+        Pole Free body diagram (FBD) and kinetic diagram (KD)
+
+From the FBD and KD displayed of the pole in figure above, multiple equations can be derived
+by applying Newton’s second law. First the horizontal forces are considered, where the blow equation derived.
+
+.. math::
+    m_p\ddot{x}_{px} = −R_x
+
+It is beneficial to be able to describe the linear acceleration of the pendulum in the horizontal
+direction by the carts acceleration and the pendulum rotational acceleration. This is done
+by substituting the variable :math:`\ddot{x}_{px}` in the below equation. Since the pendulum is attached to the
+cart with a revolute joint, the pendulums acceleration in the horizontal direction can be
+described.
+
+.. figure:: ../figures/04_simulation/PoleKinematicsHelp.svg
+    :name: test
+    :align: center
+    :scale: 150%
+
+    Kinematics assist figure
+
+
+Utilizing the above figure, the kinematic relations to the pole are derived
+
+Position
+
+.. math::
+    \begin{bmatrix}
+        x_p \\
+        y_p
+    \end{bmatrix}
+    = r_p = L
+    \begin{bmatrix}
+        \sin(\theta) \\
+        -\cos(\theta)
+    \end{bmatrix}
+
+Velocity
+
+.. math::
+    \begin{bmatrix}
+        \dot{x}_p \\
+        \dot{y}_p
+    \end{bmatrix}
+    = \dot{r}_p = L\dot{\theta}
+    \begin{bmatrix}
+        \cos(\theta) \\
+        \sin(\theta)
+    \end{bmatrix}
+
+Acceleration
+
+.. math::
+    \begin{bmatrix}
+        \ddot{x}_p \\
+        \ddot{y}_p
+    \end{bmatrix}
+    = \ddot{r}_p = L\ddot{\theta}
+    \begin{bmatrix}
+        \cos(\theta) \\
+        \sin(\theta)
+    \end{bmatrix}
+    + L\dot{\theta}^2
+    \begin{bmatrix}
+        -\sin(\theta) \\
+        \cos(\theta)
+    \end{bmatrix}
+
+Finally the pendulums acceleration along the X-axis can be described in relation to the moving cart
+
+
+.. math::
+    :name: eq:6
+
+    \ddot{x}_{px} = \ddot{x}_{cx} + \ddot{r}_{px} = \ddot{x}_{cx} +  L\ddot{\theta} \cos (\theta) - L\dot{\theta}^2 \sin (\theta)
+
+
+Applying the first pole equation, the following substitution is performed :eq:`eq:6`
+
+
 
 Lagrangian Approach
 -------------------

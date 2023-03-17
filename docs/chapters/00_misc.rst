@@ -74,4 +74,13 @@ bob
    +-----------------------------------------------------+--------------------------+
 
 
-New table a
+Question:
+If i consider the different moment if inertia compared to the center of mass and hinge joint rotation, will the sum of angular momentum then concern the same angular acceleration of the rigid body?
+
+Yes, the sum of angular momentum will still lead to the same angular acceleration of the rigid body, even if the moments of inertia are considered with respect to different points.
+
+The law of conservation of angular momentum states that the total angular momentum of an isolated system remains constant unless an external torque acts on it. This means that the sum of the angular momentum of all parts of the rigid body must be conserved.
+
+When calculating the angular momentum of a rigid body, we can consider the moments of inertia with respect to any point. However, the choice of point will affect the angular velocity and the kinetic energy of the body. The point about which the moments of inertia are calculated is called the axis of rotation. If we choose a different axis of rotation, the moments of inertia and the angular velocity will change, but the angular momentum will remain the same.
+
+Therefore, if we consider the moments of inertia with respect to the center of mass and the hinge joint rotation, the sum of angular momentum will still be conserved, and the rigid body will experience the same angular acceleration.
