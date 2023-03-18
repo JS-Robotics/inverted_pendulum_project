@@ -152,7 +152,7 @@ Substituting :eq:`eq:2` into :eq:`eq:1` Yields
 
     m_p\ddot{x}_{cx} + m_pL\ddot{\theta}\cos(\theta) - m_pL\dot{\theta}^2\sin(\theta) = −R_x
 
-Then by substituting the above equation with, the variable :math:`Rx` is eliminated.
+Then by substituting the above equation with, the variable :math:`R_x` is eliminated.
 
 .. math::
 
@@ -170,7 +170,7 @@ Then, the vertical forces acting on the pole is considered.
 .. math::
     :label: eq:4
 
-    m_p \ddot{x}_{py} = -R_y - M_pg
+    m_p \ddot{x}_{py} = -R_y - m_pg
 
 Same as for the horizontal components, it is beneficial to substitute  :math:`\ddot{x}_{py}` with the states the
 carts linear acceleration and the pendulums angular acceleration. Since the cart is not able
@@ -187,7 +187,7 @@ Substituting :eq:`eq:5` into :eq:`eq:4` yields
 .. math::
     :label: eq:6
 
-        m_pL\ddot{\theta} \sin(\theta) + m_pL\dot{\theta}^2\cos(\theta) = -R_y - M_pg
+        m_pL\ddot{\theta} \sin(\theta) + m_pL\dot{\theta}^2\cos(\theta) = -R_y - m_pg
 
 
 Now, the final steps are to eliminate the reaction force :math:`R_y` from the above equation. To achieve this, the sum
@@ -209,7 +209,7 @@ Substituting :eq:`eq:7` into :eq:`eq:6`
 .. math::
     :label: eq:8
 
-    m_pL\ddot{\theta} \sin(\theta) + m_pL\dot{\theta}^2\cos(\theta) = R_x\frac{\cos(\theta)}{\sin(\theta)} - \frac{1}{L_p \sin(\theta)}I_p \ddot{\theta} - M_pg
+    m_pL\ddot{\theta} \sin(\theta) + m_pL\dot{\theta}^2\cos(\theta) = R_x\frac{\cos(\theta)}{\sin(\theta)} - \frac{1}{L_p \sin(\theta)}I_p \ddot{\theta} - m_pg
 
 Substituting :math:`R_x` into :eq:`eq:8`
 
@@ -219,7 +219,7 @@ Substituting :math:`R_x` into :eq:`eq:8`
 
 .. math::
 
-    [-m_p\ddot{x}_{cx} - m_pL\ddot{\theta}\cos(\theta) + m_pL\dot{\theta}^2\sin(\theta)]\frac{\cos(\theta)}{\sin(\theta)} - \frac{1}{L_p \sin(\theta)}I_p \ddot{\theta} - M_pg
+    [-m_p\ddot{x}_{cx} - m_pL\ddot{\theta}\cos(\theta) + m_pL\dot{\theta}^2\sin(\theta)]\frac{\cos(\theta)}{\sin(\theta)} - \frac{1}{L_p \sin(\theta)}I_p \ddot{\theta} - m_pg
 
 Expanding the expression
 
@@ -229,7 +229,7 @@ Expanding the expression
 
 .. math::
 
-    -m_p\ddot{x}_{cx}\frac{\cos(\theta)}{\sin(\theta)} - m_pL\ddot{\theta}\cos(\theta)\frac{\cos(\theta)}{\sin(\theta)} + m_pL\dot{\theta}^2\sin(\theta)\frac{\cos(\theta)}{\sin(\theta)} - \frac{1}{L \sin(\theta)}I_p \ddot{\theta} - M_pg
+    -m_p\ddot{x}_{cx}\frac{\cos(\theta)}{\sin(\theta)} - m_pL\ddot{\theta}\cos(\theta)\frac{\cos(\theta)}{\sin(\theta)} + m_pL\dot{\theta}^2\sin(\theta)\frac{\cos(\theta)}{\sin(\theta)} - \frac{1}{L \sin(\theta)}I_p \ddot{\theta} - m_pg
 
 Simplifying
 
@@ -239,7 +239,7 @@ Simplifying
 
 .. math::
 
-    -m_p\ddot{x}_{cx}\frac{\cos(\theta)}{\sin(\theta)} - m_pL\ddot{\theta}\frac{\cos(\theta)^2}{\sin(\theta)} + m_pL\dot{\theta}^2\cos(\theta) - \frac{1}{L \sin(\theta)}I_p \ddot{\theta} - M_pg
+    -m_p\ddot{x}_{cx}\frac{\cos(\theta)}{\sin(\theta)} - m_pL\ddot{\theta}\frac{\cos(\theta)^2}{\sin(\theta)} + m_pL\dot{\theta}^2\cos(\theta) - \frac{1}{L \sin(\theta)}I_p \ddot{\theta} - m_pg
 
 The expression is then expanded with :math:`\sin(\theta)`
 
@@ -249,7 +249,7 @@ The expression is then expanded with :math:`\sin(\theta)`
 
 .. math::
 
-    -m_p\ddot{x}_{cx}\cos(\theta) - m_pL\ddot{\theta}\cos(\theta)^2 + m_pL\dot{\theta}^2\cos(\theta)\sin(\theta) - \frac{1}{L }I_p \ddot{\theta} - M_pg\sin(\theta)
+    -m_p\ddot{x}_{cx}\cos(\theta) - m_pL\ddot{\theta}\cos(\theta)^2 + m_pL\dot{\theta}^2\cos(\theta)\sin(\theta) - \frac{1}{L }I_p \ddot{\theta} - m_pg\sin(\theta)
 
 The expression is then simplified further
 
