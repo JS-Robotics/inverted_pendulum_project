@@ -158,11 +158,115 @@ Then by substituting the above equation with, the variable :math:`Rx` is elimina
 
     m_c\ddot{x}_{cx} = F_m - F_f - m_p\ddot{x}_{cx} - m_pL\ddot{\theta}\cos(\theta) + m_pL\dot{\theta}^2\sin(\theta)
 
-The equation is then simplified
+The equation is then simplified into :eq:`eq:3`
+
+.. math::
+    :label: eq:3
+
+    (m_c + m_p)\ddot{x}_{cx} + m_pL\ddot{\theta}\cos(\theta) - m_pL\dot{\theta}^2\sin(\theta) = F_m - F_f
+
+Then, the vertical forces acting on the pole is considered.
+
+.. math::
+    :label: eq:4
+
+    m_p \ddot{x}_{py} = -R_y - M_pg
+
+Same as for the horizontal components, it is beneficial to substitute  :math:`\ddot{x}_{py}` with the states the
+carts linear acceleration and the pendulums angular acceleration. Since the cart is not able
+to move in the horizontal direction :math:`\ddot{x}_{cy}` is zero.
+
+.. math::
+    :label: eq:5
+
+        \ddot{x}_{py} = \ddot{x}_{cy} + \ddot{r}_{py} = 0 + L\ddot{\theta} \sin(\theta) + L\dot{\theta}^2\cos(\theta)
+
+
+Substituting :eq:`eq:5` into :eq:`eq:4` yields
+
+.. math::
+    :label: eq:6
+
+        m_pL\ddot{\theta} \sin(\theta) + m_pL\dot{\theta}^2\cos(\theta) = -R_y - M_pg
+
+
+Now, the final steps are to eliminate the reaction force :math:`R_y` from the above equation. To achieve this, the sum
+of moment of the pole is collected about the center of mass.
 
 .. math::
 
-    (m_c + m_p)\ddot{x}_{cx} + m_pL\ddot{\theta}\cos(\theta) - m_pL\dot{\theta}^2\sin(\theta) = F_m - F_f
+        I_p \ddot{\theta} =  - R_xL\cos(\theta) - R_yL\sin(\theta)
+
+Solving for :math:`R_y` yields
+
+.. math::
+        :label: eq:7
+
+        R_y = -R_x\frac{\cos(\theta)}{\sin(\theta)} -  \frac{1}{L \sin(\theta)}I_p \ddot{\theta}
+
+Substituting :eq:`eq:7` into :eq:`eq:6`
+
+.. math::
+    :label: eq:8
+
+    m_pL\ddot{\theta} \sin(\theta) + m_pL\dot{\theta}^2\cos(\theta) = R_x\frac{\cos(\theta)}{\sin(\theta)} + \frac{1}{L_p \sin(\theta)}I_p \ddot{\theta} - M_pg
+
+Substituting :math:`R_x` into :eq:`eq:8`
+
+.. math::
+
+    m_pL\ddot{\theta} \sin(\theta) + m_pL\dot{\theta}^2\cos(\theta) =
+
+.. math::
+
+    [-m_p\ddot{x}_{cx} - m_pL\ddot{\theta}\cos(\theta) + m_pL\dot{\theta}^2\sin(\theta)]\frac{\cos(\theta)}{\sin(\theta)} + \frac{1}{L_p \sin(\theta)}I_p \ddot{\theta} - M_pg
+
+Expanding the expression
+
+.. math::
+
+    m_pL\ddot{\theta} \sin(\theta) + m_pL\dot{\theta}^2\cos(\theta) =
+
+.. math::
+
+    -m_p\ddot{x}_{cx}\frac{\cos(\theta)}{\sin(\theta)} - m_pL\ddot{\theta}\cos(\theta)\frac{\cos(\theta)}{\sin(\theta)} + m_pL\dot{\theta}^2\sin(\theta)\frac{\cos(\theta)}{\sin(\theta)} + \frac{1}{L \sin(\theta)}I_p \ddot{\theta} - M_pg
+
+Simplifying
+
+.. math::
+
+    m_pL\ddot{\theta} \sin(\theta) + m_pL\dot{\theta}^2\cos(\theta) =
+
+.. math::
+
+    -m_p\ddot{x}_{cx}\frac{\cos(\theta)}{\sin(\theta)} - m_pL\ddot{\theta}\frac{\cos(\theta)^2}{\sin(\theta)} + m_pL\dot{\theta}^2\cos(\theta) + \frac{1}{L \sin(\theta)}I_p \ddot{\theta} - M_pg
+
+The expression is then expanded with :math:`\sin(\theta)`
+
+.. math::
+
+    m_pL\ddot{\theta} \sin(\theta)^2 + m_pL\dot{\theta}^2\cos(\theta)\sin(\theta) =
+
+.. math::
+
+    -m_p\ddot{x}_{cx}\cos(\theta) - m_pL\ddot{\theta}\cos(\theta)^2 + m_pL\dot{\theta}^2\cos(\theta)\sin(\theta) + \frac{1}{L }I_p \ddot{\theta} - M_pg\sin(\theta)
+
+The expression is then simplified further
+
+.. math::
+
+    m_pL^2\ddot{\theta}  = -m_pL\ddot{x}_{cx}\cos(\theta) + I_p \ddot{\theta} - M_pLg\sin(\theta)
+
+From the above calculations the equations of motions are derived to be
+
+.. math::
+
+    \ddot{x}_{cx} = \frac{F_m - F_f - m_pL\ddot{\theta}\cos(\theta) + m_pL\dot{\theta}^2\sin(\theta)}{m_p + m_c}
+
+.. math::
+
+    \ddot{\theta}  = \frac{-m_pL\ddot{x}_{cx}\cos(\theta) - M_pLg\sin(\theta)}{I_p - m_pL^2}
+
 
 Lagrangian Approach
 -------------------
