@@ -195,21 +195,21 @@ of moment of the pole is collected about the center of mass.
 
 .. math::
 
-        I_p \ddot{\theta} =  - R_xL\cos(\theta) - R_yL\sin(\theta)
+        I_p \ddot{\theta} =  R_xL\cos(\theta) + R_yL\sin(\theta)
 
 Solving for :math:`R_y` yields
 
 .. math::
         :label: eq:7
 
-        R_y = -R_x\frac{\cos(\theta)}{\sin(\theta)} -  \frac{1}{L \sin(\theta)}I_p \ddot{\theta}
+        R_y = -R_x\frac{\cos(\theta)}{\sin(\theta)} + \frac{1}{L \sin(\theta)}I_p \ddot{\theta}
 
 Substituting :eq:`eq:7` into :eq:`eq:6`
 
 .. math::
     :label: eq:8
 
-    m_pL\ddot{\theta} \sin(\theta) + m_pL\dot{\theta}^2\cos(\theta) = R_x\frac{\cos(\theta)}{\sin(\theta)} + \frac{1}{L_p \sin(\theta)}I_p \ddot{\theta} - M_pg
+    m_pL\ddot{\theta} \sin(\theta) + m_pL\dot{\theta}^2\cos(\theta) = R_x\frac{\cos(\theta)}{\sin(\theta)} - \frac{1}{L_p \sin(\theta)}I_p \ddot{\theta} - M_pg
 
 Substituting :math:`R_x` into :eq:`eq:8`
 
@@ -219,7 +219,7 @@ Substituting :math:`R_x` into :eq:`eq:8`
 
 .. math::
 
-    [-m_p\ddot{x}_{cx} - m_pL\ddot{\theta}\cos(\theta) + m_pL\dot{\theta}^2\sin(\theta)]\frac{\cos(\theta)}{\sin(\theta)} + \frac{1}{L_p \sin(\theta)}I_p \ddot{\theta} - M_pg
+    [-m_p\ddot{x}_{cx} - m_pL\ddot{\theta}\cos(\theta) + m_pL\dot{\theta}^2\sin(\theta)]\frac{\cos(\theta)}{\sin(\theta)} - \frac{1}{L_p \sin(\theta)}I_p \ddot{\theta} - M_pg
 
 Expanding the expression
 
@@ -229,7 +229,7 @@ Expanding the expression
 
 .. math::
 
-    -m_p\ddot{x}_{cx}\frac{\cos(\theta)}{\sin(\theta)} - m_pL\ddot{\theta}\cos(\theta)\frac{\cos(\theta)}{\sin(\theta)} + m_pL\dot{\theta}^2\sin(\theta)\frac{\cos(\theta)}{\sin(\theta)} + \frac{1}{L \sin(\theta)}I_p \ddot{\theta} - M_pg
+    -m_p\ddot{x}_{cx}\frac{\cos(\theta)}{\sin(\theta)} - m_pL\ddot{\theta}\cos(\theta)\frac{\cos(\theta)}{\sin(\theta)} + m_pL\dot{\theta}^2\sin(\theta)\frac{\cos(\theta)}{\sin(\theta)} - \frac{1}{L \sin(\theta)}I_p \ddot{\theta} - M_pg
 
 Simplifying
 
@@ -239,7 +239,7 @@ Simplifying
 
 .. math::
 
-    -m_p\ddot{x}_{cx}\frac{\cos(\theta)}{\sin(\theta)} - m_pL\ddot{\theta}\frac{\cos(\theta)^2}{\sin(\theta)} + m_pL\dot{\theta}^2\cos(\theta) + \frac{1}{L \sin(\theta)}I_p \ddot{\theta} - M_pg
+    -m_p\ddot{x}_{cx}\frac{\cos(\theta)}{\sin(\theta)} - m_pL\ddot{\theta}\frac{\cos(\theta)^2}{\sin(\theta)} + m_pL\dot{\theta}^2\cos(\theta) - \frac{1}{L \sin(\theta)}I_p \ddot{\theta} - M_pg
 
 The expression is then expanded with :math:`\sin(\theta)`
 
@@ -249,13 +249,13 @@ The expression is then expanded with :math:`\sin(\theta)`
 
 .. math::
 
-    -m_p\ddot{x}_{cx}\cos(\theta) - m_pL\ddot{\theta}\cos(\theta)^2 + m_pL\dot{\theta}^2\cos(\theta)\sin(\theta) + \frac{1}{L }I_p \ddot{\theta} - M_pg\sin(\theta)
+    -m_p\ddot{x}_{cx}\cos(\theta) - m_pL\ddot{\theta}\cos(\theta)^2 + m_pL\dot{\theta}^2\cos(\theta)\sin(\theta) - \frac{1}{L }I_p \ddot{\theta} - M_pg\sin(\theta)
 
 The expression is then simplified further
 
 .. math::
 
-    m_pL^2\ddot{\theta}  = -m_pL\ddot{x}_{cx}\cos(\theta) + I_p \ddot{\theta} - M_pLg\sin(\theta)
+    m_pL^2\ddot{\theta}  = -m_pL\ddot{x}_{cx}\cos(\theta) - I_p \ddot{\theta} - M_pLg\sin(\theta)
 
 From the above calculations the equations of motions are derived to be
 
@@ -265,7 +265,7 @@ From the above calculations the equations of motions are derived to be
 
 .. math::
 
-    \ddot{\theta}  = \frac{-m_pL\ddot{x}_{cx}\cos(\theta) - M_pLg\sin(\theta)}{I_p - m_pL^2}
+    \ddot{\theta}  = \frac{-m_pL\ddot{x}_{cx}\cos(\theta) - M_pLg\sin(\theta)}{I_p + m_pL^2}
 
 
 Lagrangian Approach
