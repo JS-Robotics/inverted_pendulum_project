@@ -6,34 +6,7 @@
 Inverted Pendulum Documentation
 =============================================
 
-Let's try this out
-
-Inline math is used with Since Pythagoras, we know that :math:`a^2 + b^2 = c^2`.
-
-Math blocks are used with
-
-.. math::
-
-   (a + b)^2 = a^2 + 2ab + b^2
-
-   (a - b)^2 = a^2 - 2ab + b^2
-
-New math block test
-
-.. math::
-
-   a = \inf \int^{a}_{b} x dx
-
-.. math::
-
-   \frac{ \sum_{t=0}^{N}f(t,k) }{N}
-
-
-Now lets try a coding block
-
-   int a = 0;
-   int b = 1;
-   float c = static_cast<float>(b);
+TODO
 
 
 .. toctree::

@@ -73,6 +73,35 @@ bob
    |                                                     |    Tool8                 |
    +-----------------------------------------------------+--------------------------+
 
+Inline math is used with Since Pythagoras, we know that :math:`a^2 + b^2 = c^2`.
+
+Math blocks are used with
+
+.. math::
+
+   (a + b)^2 = a^2 + 2ab + b^2
+
+   (a - b)^2 = a^2 - 2ab + b^2
+
+New math block test
+
+.. math::
+
+   a = \inf \int^{a}_{b} x dx
+
+.. math::
+
+   \frac{ \sum_{t=0}^{N}f(t,k) }{N}
+
+
+Now lets try a coding block
+
+.. code-block:: CPP
+
+      int a = 0;
+      int b = 1;
+      float c = static_cast<float>(b);
+
 
 Question:
 If i consider the different moment if inertia compared to the center of mass and hinge joint rotation, will the sum of angular momentum then concern the same angular acceleration of the rigid body?
