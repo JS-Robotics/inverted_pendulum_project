@@ -271,6 +271,19 @@ From the above calculations the equations of motions are derived to be
 Lagrangian Approach
 -------------------
 
+Parameter Estimation
+********************
+
+In order to make the simulation model as close to the real system as possible. The different parameters constants
+from the derived equations of motion has to be deduced.
+
+Pendulum Damping
+----------------
+
+It is possible to determine the damping coefficient
+
+
+
 asdasdasdsad
 
 Forward Euler

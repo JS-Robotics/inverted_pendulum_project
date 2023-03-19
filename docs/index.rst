@@ -19,6 +19,7 @@ TODO
    ./chapters/software
    ./chapters/simulation
    ./chapters/control
+   ./chapters/system_modeling
    ./chapters/00_misc
 
 Indices and tables
