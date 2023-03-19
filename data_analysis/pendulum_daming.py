@@ -111,8 +111,13 @@ for step in range(len(t)):
 c1 = 0.050
 c2 = 0.0001
 
+c3 = 0.075
+c4 = 0.0325
+c5 = 0.000001
+c6 = 0.04315
 e = (points[0])*np.exp(-c1*t)
 e_l = (points[0])*np.exp(-c*t)
+e_2 = points[0]*np.exp(-c6*t)
 
 t = t + points_time[0]
 
@@ -120,6 +125,7 @@ ax.plot((epoch_ns - epoch_ns[0]) / 10 ** 9, position, color='r')
 ax.plot(points_time, points, marker='o', color='b')
 ax.plot(t, e, color='c')
 ax.plot(t, e_l, color='g')
+ax.plot(t, e_2, color='k')
 # ax.plot((epoch_ns1 - epoch_ns1[0]) / 10 ** 9, position1, color='b')
 # ax.plot((epoch_ns2-epoch_ns2[0])/10**9, position2, color='g')
 # ax.plot((epoch_ns3-epoch_ns3[0])/10**9, position3, color='k')
