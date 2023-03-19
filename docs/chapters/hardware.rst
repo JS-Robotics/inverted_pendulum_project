@@ -19,7 +19,7 @@ Odrive v3.6
 
    .. container:: rightside
 
-      .. figure:: ../figures/02_hardware/OdriveImage.jpeg
+      .. figure:: ../figures/hardware/OdriveImage.jpeg
          :alt: AMT21
          :scale: 22%
 
@@ -45,7 +45,7 @@ AMT213F-V
 
    .. container:: rightside
 
-      .. figure:: ../figures/02_hardware/amt213fv.PNG
+      .. figure:: ../figures/hardware/amt213fv.PNG
          :alt: AMT21
          :scale: 37%
 
@@ -85,7 +85,7 @@ bob
    :widths: auto
 
    +-----------------------------------------------------+--------------------------+
-   | .. image:: ../figures/02_hardware/amt213fv.PNG      |                          |
+   | .. image:: ../figures/hardware/amt213fv.PNG         |                          |
    |                                                     |                          |
    |                                                     |                          |
    |                                                     |                          |

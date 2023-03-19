@@ -14,11 +14,11 @@ TODO
    :numbered:
    :caption: Contents:
 
-   ./chapters/01_introduction
-   ./chapters/02_hardware
-   ./chapters/03_software
-   ./chapters/04_simulation
-   ./chapters/05_control
+   ./chapters/introduction
+   ./chapters/hardware
+   ./chapters/software
+   ./chapters/simulation
+   ./chapters/control
    ./chapters/00_misc
 
 Indices and tables

@@ -32,7 +32,7 @@ asdsadd hello hei
 
 .. container:: align-center
 
-    .. image:: ../figures/04_simulation/cart_pole.svg
+    .. image:: ../figures/simulation/cart_pole.svg
         :scale: 150%
 
 |
@@ -43,7 +43,7 @@ Newtonian Approach
 
 .. container:: align-center
 
-    .. figure:: ../figures/04_simulation/CartFBDKD.svg
+    .. figure:: ../figures/simulation/CartFBDKD.svg
         :scale: 150%
 
         Cart Free body diagram (FBD) and kinetic diagram (KD)
@@ -64,7 +64,7 @@ zero and is constant.
 
 .. container:: align-center
 
-    .. figure:: ../figures/04_simulation/PoleFBDKD.svg
+    .. figure:: ../figures/simulation/PoleFBDKD.svg
         :scale: 115%
 
         Pole Free body diagram (FBD) and kinetic diagram (KD)
@@ -83,7 +83,7 @@ by substituting the variable :math:`\ddot{x}_{px}` in the below equation. Since 
 cart with a revolute joint, the pendulums acceleration in the horizontal direction can be
 described.
 
-.. figure:: ../figures/04_simulation/PoleKinematicsHelp.svg
+.. figure:: ../figures/simulation/PoleKinematicsHelp.svg
     :name: test
     :align: center
     :scale: 150%

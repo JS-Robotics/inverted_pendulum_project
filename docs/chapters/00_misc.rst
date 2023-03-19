@@ -6,7 +6,7 @@ This is the testing page
 Tests
 --------------
 
-.. figure:: ../figures/02_hardware/amt213fv.PNG
+.. figure:: ../figures/hardware/amt213fv.PNG
    :alt: AMT21
    :scale: 40%
 
@@ -22,7 +22,7 @@ name in between
 
    .. container:: rightside
 
-      .. figure:: ../figures/02_hardware/amt213fv.PNG
+      .. figure:: ../figures/hardware/amt213fv.PNG
          :alt: AMT21
          :scale: 45%
 
@@ -59,7 +59,7 @@ bob
    :widths: auto
 
    +-----------------------------------------------------+--------------------------+
-   | .. image:: ../figures/02_hardware/amt213fv.PNG      |                          |
+   | .. image:: ../figures/hardware/amt213fv.PNG         |                          |
    |                                                     |                          |
    |                                                     |                          |
    |                                                     |                          |
