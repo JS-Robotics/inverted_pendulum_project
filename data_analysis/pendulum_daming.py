@@ -121,11 +121,30 @@ e_2 = points[0]*np.exp(-c6*t)
 
 t = t + points_time[0]
 
+# Poly fit
+points = np.array(points)
+points_time = np.array(points_time)
+A, B = np.polyfit(points_time, np.log(points), 1)
+
+
+T = np.median(points_time[1:] - points_time[0:np.size(points)-1])
+print(T)
+print(points_time[5] - points_time[4])
+t_new = np.zeros(1000)
+dt = 0.08
+timer = 0
+
+for step in range(len(t_new)):
+    t_new[step] = timer
+    timer += dt
+plotter = np.exp(A*t_new + B) * np.sin(2*np.pi/T*t_new - 0.75)
+
 ax.plot((epoch_ns - epoch_ns[0]) / 10 ** 9, position, color='r')
 ax.plot(points_time, points, marker='o', color='b')
 ax.plot(t, e, color='c')
 ax.plot(t, e_l, color='g')
 ax.plot(t, e_2, color='k')
+ax.plot(t_new, plotter, color='y')
 # ax.plot((epoch_ns1 - epoch_ns1[0]) / 10 ** 9, position1, color='b')
 # ax.plot((epoch_ns2-epoch_ns2[0])/10**9, position2, color='g')
 # ax.plot((epoch_ns3-epoch_ns3[0])/10**9, position3, color='k')
