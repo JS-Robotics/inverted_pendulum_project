@@ -89,16 +89,24 @@ int main() {
   int set_size = 4500;  // Sample for 60seconds
   SampleSet.reserve(set_size);
   SampleSet.resize(set_size);
-
+  uint16_t encoder_value_old;
   for (int i = 0; i < set_size; i++) {
     std::chrono::time_point t_start = std::chrono::steady_clock::now();
 
     encoder_value = driver.GetEncoderPosition();
+
     std::chrono::time_point<std::chrono::system_clock> now = std::chrono::system_clock::now();
     std::chrono::duration<uint64_t, std::nano>
         nano_seconds = std::chrono::duration_cast<std::chrono::duration<uint64_t, std::nano>>(now.time_since_epoch());
 
-    SampleSet.at(i).position = encoder_value;
+    if(!driver.ChecksumFailed()){
+      SampleSet.at(i).position = encoder_value;
+      encoder_value_old = encoder_value;
+    }
+    else{
+      SampleSet.at(i).position = encoder_value_old;
+    }
+
     SampleSet.at(i).epoch_time_ns = nano_seconds.count();
 
     std::chrono::time_point t_stop = std::chrono::steady_clock::now();

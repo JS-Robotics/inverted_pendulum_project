@@ -38,7 +38,7 @@ def phase_shift(pos_set):
 position, epoch_ns, iso8601 = read_file("position_data_sets/cw_sample_set4.csv")
 position1, epoch_ns1, iso86011 = read_file("position_data_sets/cw_sample_set3.csv")
 position2, epoch_ns2, iso86012 = read_file("position_data_sets/cw_sample_set2.csv")
-position3, epoch_ns3, iso86013 = read_file("position_data_sets/cw_sample_set5.csv")
+position3, epoch_ns3, iso86013 = read_file("position_data_sets/cw_sample_set11.csv")
 position4, epoch_ns4, iso86014 = read_file("position_data_sets/cw_sample_set6.csv")
 
 #  Correct single turn behaviour
