@@ -38,7 +38,7 @@ def phase_shift(pos_set):
 
 pre_path = "../ros2/src/ivp_pendulum/tools/pendulum_data/"
 
-position, epoch_ns, iso8601 = read_file(pre_path+"position_data_sets/cw_sample_set12.csv")
+position, epoch_ns, iso8601 = read_file(pre_path+"position_data_sets/cw_sample_set10.csv")
 
 #  Correct single turn behaviour
 position = phase_shift(position)
@@ -46,8 +46,8 @@ position = phase_shift(position)
 # plot the data
 fig = plt.figure()
 ax = fig.add_subplot(1, 1, 1)
-shift_read_end = len(position)-1000  # -2000 at 11
-shift_read_start = 100  # 1500
+shift_read_end = len(position)-800  # -2000 at 11
+shift_read_start = 550 #700  # 1500
 print(shift_read_end)
 position = np.array(position[shift_read_start:shift_read_end])
 epoch_ns = np.array(epoch_ns[shift_read_start:shift_read_end])
@@ -144,7 +144,7 @@ timer = 0
 for step in range(len(t_new)):
     t_new[step] = timer
     timer += dt
-plotter = np.exp(A*t_new + B) * np.sin(2*np.pi/T*t_new + 0.25)
+plotter = np.exp(A*t_new + B) * np.sin(2*np.pi/T*t_new + 0.95)
 e_new = (A*t_new + np.exp(B)) * np.sin(2*np.pi/T*t_new + 0.25)
 
 ax.plot((epoch_ns - epoch_ns[0]) / 10 ** 9, position, color='r')
