@@ -50,6 +50,7 @@ shift_read_end = len(position)-800  # -2000 at 11
 shift_read_start = 550 #700  # 1500
 print(shift_read_end)
 position = np.array(position[shift_read_start:shift_read_end])
+position = position*2*np.pi/16382  # Convert to rad
 epoch_ns = np.array(epoch_ns[shift_read_start:shift_read_end])
 iso8601 = np.array(iso8601[shift_read_start:shift_read_end])
 
@@ -130,9 +131,6 @@ e_2 = points[0]*np.exp(-c6*t)
 
 t = t + points_time[0]
 
-
-
-
 T = np.median(points_time[1:] - points_time[0:np.size(points)-1])
 print(T)
 print(points_time[1:] - points_time[0:np.size(points)-1])
@@ -147,11 +145,35 @@ for step in range(len(t_new)):
 plotter = np.exp(A*t_new + B) * np.sin(2*np.pi/T*t_new + 0.95)
 e_new = (A*t_new + np.exp(B)) * np.sin(2*np.pi/T*t_new + 0.25)
 
+
+# Numerical sim
+# display the plot
+dd_a = 0
+d_a = 0
+d = position[0]
+pos_samples = []
+damp = 0.0008297
+# damp = 0.0297
+l_p = 0.685 - 0.246
+g = 9.81
+m = 0.071
+I_p = 0
+for i in t_new:
+    # dd_a = - damp/m*d_a - g/l_p*np.sin(d)
+    # dd_a = (-m * l_p * g * np.sin(d) - damp*l_p**2 * d) / (I_p + m * l_p**2)
+    dd_a = (-m * l_p * g * np.sin(d) - damp * d_a) / (I_p + m * l_p * l_p)
+    d_a = d_a + dd_a*dt
+    d = d + d_a * dt
+    pos_samples.append(d)
+
+
 ax.plot((epoch_ns - epoch_ns[0]) / 10 ** 9, position, color='r')
 ax.plot(points_time, points, marker='o', color='b')
-#ax.plot(t, e, color='c')
+# ax.plot(t, e, color='c')
+
+ax.plot(t_new, pos_samples, color='c')
 ax.plot(t, e_l, color='g')
-ax.plot(t, e_2, color='k')
+# ax.plot(t, e_2, color='k')
 ax.plot(t_new, plotter, color='y')
 # ax.plot(t_new, e_new, color='k')
 # ax.plot((epoch_ns1 - epoch_ns1[0]) / 10 ** 9, position1, color='b')
@@ -162,11 +184,12 @@ ax.plot(t_new, plotter, color='y')
 
 ax.set_title('plot')
 
-# display the plot
 
 plt.figure()
 plt.plot(points_time, np.log(points), 'ks')
 plt.plot(points_time, A*points_time + B, 'r')
 plt.show()
+
+print(A)
 
 # https://www.youtube.com/watch?v=z3jaxxK1Pt8
