@@ -152,35 +152,36 @@ dd_a = 0
 d_a = 0
 d = position[0]
 pos_samples = []
-damp = 0.0008297
+damp = 0.00112297
 # damp = 0.0297
 l_p = 0.685 - 0.246
 g = 9.81
 m = 0.071
-I_p = 0
+I_p = 0.00466  # 0.00456106366
 for i in t_new:
     # dd_a = - damp/m*d_a - g/l_p*np.sin(d)
-    # dd_a = (-m * l_p * g * np.sin(d) - damp*l_p**2 * d) / (I_p + m * l_p**2)
+    # dd_a = (-m * l_p * g * np.sin(d) - damp*l_p**2 * d_a) / (I_p + m * l_p**2)
     dd_a = (-m * l_p * g * np.sin(d) - damp * d_a) / (I_p + m * l_p * l_p)
     d_a = d_a + dd_a*dt
     d = d + d_a * dt
     pos_samples.append(d)
 
 
-ax.plot((epoch_ns - epoch_ns[0]) / 10 ** 9, position, color='r')
+sample_set = ax.plot((epoch_ns - epoch_ns[0]) / 10 ** 9, position, color='r', label='Sample set')
 ax.plot(points_time, points, marker='o', color='b')
 # ax.plot(t, e, color='c')
 
 ax.plot(t_new, pos_samples, color='c')
-ax.plot(t, e_l, color='g')
+line_reconstructed = ax.plot(t, e_l, color='g', label='Reconstructed')
 # ax.plot(t, e_2, color='k')
-ax.plot(t_new, plotter, color='y')
+line_sim = ax.plot(t_new, plotter, color='y', label='Simulation model')
 # ax.plot(t_new, e_new, color='k')
 # ax.plot((epoch_ns1 - epoch_ns1[0]) / 10 ** 9, position1, color='b')
 # ax.plot((epoch_ns2-epoch_ns2[0])/10**9, position2, color='g')
 # ax.plot((epoch_ns3-epoch_ns3[0])/10**9, position3, color='k')
 # ax.plot((epoch_ns4-epoch_ns4[0])/10**9, position4, color='c')
 
+ax.legend(handles=[sample_set[0], line_reconstructed[0], line_sim[0]])
 
 ax.set_title('plot')
 
@@ -188,6 +189,7 @@ ax.set_title('plot')
 plt.figure()
 plt.plot(points_time, np.log(points), 'ks')
 plt.plot(points_time, A*points_time + B, 'r')
+
 plt.show()
 
 print(A)
