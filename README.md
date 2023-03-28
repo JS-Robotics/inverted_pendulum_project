@@ -1,5 +1,6 @@
 # inverted_pendulum_project
-TODO
+
+Follow the documentation updates at: https://inverted-pendulum.readthedocs.io/en/latest/
 
 
 ### Run pendulum data sampler ###
