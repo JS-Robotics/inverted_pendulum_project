@@ -32,7 +32,7 @@ class Control(Node):
         self.end_time = None
         self.loop_time = 0.01
         self.heart_beat = None
-        self.effective_radius = 19.184/1000
+        self.effective_radius = 19.184/(2*1000)  # d/2 = r [mm], r/1000 --> r[m]
         self.pi = 3.14159265359
         self.heart_beat_threshold = 0.1  # 100ms before it brakes
         self.status_qos = qos.QoSProfile(depth=1,
