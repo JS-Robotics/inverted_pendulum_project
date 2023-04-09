@@ -15,6 +15,7 @@ Set the requested torque setpoint of the motor.
 * :code:`msg.y` = pendulum angular velocity :code:`[rad/s]`
 * :code:`msg.z` = Not in use :code:`[-]`
 * QOS: :code:`rcl::SensorDataQoS`
+* Hz:
 
 pendulum_state
 ---------------
@@ -26,15 +27,17 @@ Publishes the current pendulum angular position and angular velocity.
 * :code:`msg.y` = pendulum angular velocity :code:`[rad/s]`
 * :code:`msg.z` = Not in use :code:`[-]`
 * QOS: :code:`rcl::SensorDataQoS`
+* Frequency: 50[Hz] - Period: 20[ms]
 
-turns
+cart_position
 ------
-Publishes the current number of turns that the motor has performed form center.
+Publishes the current cart position from center.
 
 * Source type: :code:`PUBLISHER`
 * Message type: :code:`std_msgs/msg/Float32`
-* :code:`msg.data` = pendulum turns :code:`[turn]`
+* :code:`msg.data` = cart position :code:`[m]`
 * QOS: :code:`rcl::SensorDataQoS`
+* Frequency: 100[Hz] - Period: 10[ms]
 
 
 status_cart
@@ -55,3 +58,4 @@ Publishes the current status of the cart.
                                              reliability=qos.QoSReliabilityPolicy.RELIABLE,
                                              history=qos.QoSHistoryPolicy.KEEP_LAST,
                                              durability=qos.QoSDurabilityPolicy.TRANSIENT_LOCAL)
+* Frequency: Only published on change, changed at 100[Hz]

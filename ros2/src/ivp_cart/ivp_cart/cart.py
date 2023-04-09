@@ -32,6 +32,8 @@ class Control(Node):
         self.end_time = None
         self.loop_time = 0.01
         self.heart_beat = None
+        self.effective_radius = 19.184/1000
+        self.pi = 3.14159265359
         self.heart_beat_threshold = 0.1  # 100ms before it brakes
         self.status_qos = qos.QoSProfile(depth=1,
                                          reliability=qos.QoSReliabilityPolicy.RELIABLE,
@@ -45,7 +47,7 @@ class Control(Node):
         self.start_time = time.time()
         # self.turn_message.data = 1.23
 
-        self.turn_message.data = -1 * self.cart_control.get_estimated_pos()  # -1 to make right positive direction TODO Turn back for motor
+        self.turn_message.data = -1 * self.cart_control.get_estimated_pos() * 2*self.effective_radius*self.pi  # -1 to make right positive direction, (Is also converted from turns to distance traveled: distance = pi*2r*turns) TODO Turn back for motor
         self._turn_publisher.publish(self.turn_message)
         duration = time.time() - self.heart_beat_threshold
         if duration > self.heart_beat:
@@ -86,7 +88,7 @@ class Control(Node):
                                                            self.torque_callback,
                                                            qos.qos_profile_sensor_data)
 
-        self._turn_publisher = self.create_publisher(Float32, 'turns', qos.qos_profile_sensor_data)
+        self._turn_publisher = self.create_publisher(Float32, 'cart_position', qos.qos_profile_sensor_data)
         self._status_publisher = self.create_publisher(UInt8, 'status_cart', self.status_qos)
         self.heart_beat = time.time()  # Init timer on init in order to avoid None type error
         self.state = States.CONFIGURED
