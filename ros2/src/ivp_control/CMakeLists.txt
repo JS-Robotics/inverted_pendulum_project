@@ -8,11 +8,12 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
 
 add_library(IvpControl src/ivp_control.cc)
 target_include_directories(IvpControl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_link_libraries(IvpControl rclcpp::rclcpp ${std_msgs_TARGETS})
+target_link_libraries(IvpControl rclcpp::rclcpp ${std_msgs_TARGETS} ${geometry_msgs_TARGETS})
 
 
 add_executable(ivp_control src/main.cc)
