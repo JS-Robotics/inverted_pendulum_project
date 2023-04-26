@@ -282,7 +282,9 @@ Pendulum Damping
 
 It is possible to determine the damping coefficient
 
+.. container:: align-center
 
+    .. image:: ../figures/simulation/log_linear_fit_full.svg
 
 asdasdasdsad
 

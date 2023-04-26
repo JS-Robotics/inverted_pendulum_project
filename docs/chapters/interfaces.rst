@@ -5,17 +5,15 @@ Interfaces
 ROS2 Topics
 ************
 
-torque_setpoint
+force_setpoint
 ----------------
 Set the requested torque setpoint of the motor.
 
 * Source type: :code:`SUBSCRIBER`
 * Message type: :code:`std_msgs/msg/Float32`
-* :code:`msg.x` = pendulum angular position :code:`[rad]`
-* :code:`msg.y` = pendulum angular velocity :code:`[rad/s]`
-* :code:`msg.z` = Not in use :code:`[-]`
+* :code:`msg.data` = Cart applied linear force :code:`[N]`
 * QOS: :code:`rcl::SensorDataQoS`
-* Hz:
+* Frequency : TBD
 
 pendulum_state
 ---------------
@@ -30,7 +28,7 @@ Publishes the current pendulum angular position and angular velocity.
 * Frequency: 50[Hz] - Period: 20[ms]
 
 cart_position
-------
+--------------
 Publishes the current cart position from center.
 
 * Source type: :code:`PUBLISHER`
