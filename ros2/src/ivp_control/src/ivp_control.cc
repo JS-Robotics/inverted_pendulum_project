@@ -1,5 +1,6 @@
 #include <cstdio>
 #include "ivp_control/ivp_control.h"
+#include <cmath>
 namespace ivp {
 Control::Control() : Node("IvpControlNode") {
   stop_node_ = false;
@@ -31,8 +32,8 @@ bool Control::Configure() {
 
 void Control::RunOnce() {
   t_start_ = std::chrono::steady_clock::now();  //Begin execution timer
-//  auto torque = static_cast<float>(SwingUp(state_));
-//  Publish(torque);
+  auto torque = static_cast<float>(SwingUp(state_));
+  Publish(torque);
 
 //  std::cout << "------------------------------------------------------------------" << std::endl;
 //  std::cout << "angle: " << state_.angle << std::endl;
@@ -70,16 +71,25 @@ double Control::SwingUp(const State &state) {
   double g = 9.81f;
   double F_m = 0;
   double b_c = 0.095f;
-  double e_t = m_p * g * L_p;
-  // 1/2 * masspole * (2 * length)**2 / 3 *  x[3]**2 + np.cos(x[2]) * polemass_length * gravity
-  // 0.5 * mv² + cos(theta)*m_p*l_p*g
-  // 0.5 * m*(r*w)² + cos(theta)*m_p*l_p*g
-  // 0.5 * m*r²*w² + cos(theta)*m_p*l_p*g
-  // E = 0.5 * J * w² + mgh, h = l*cos(theta)
-  //  if (state.angle > 1.571 || state.angle < 4.712) {
-//    e_p = 0.5 * I_p * state.d_angle * state.d_angle + m_p * g * L_p * cos(state.angle);
-    e_p = m_p * g * L_p * cos(state.angle);
-    double value = ((e_t - e_p) * state.d_angle * cos(state.angle));
+  double e_t = 0.0f; //m_p * g * L_p;
+  double pi = 3.14159265359;
+
+  double angle = state.angle;
+  if(state.angle < 2*pi && state.angle >  2*pi - 0.5*pi){
+    angle = state.angle - 2*pi;
+  }
+  if(state.angle < 2*pi - 0.5*pi && state.angle > 2*pi - 1.5*pi ){
+    angle = state.angle - pi;
+  }
+
+    e_p = 0.5*I_p*state.d_angle*state.d_angle + m_p * g * L_p * (cos(angle));
+    std::cout << "Cos: " << cos(angle) << " Angle: " << angle << std::endl;
+    double value = (e_t - e_p) * state.d_angle * (cos(angle));
+    std::cout << "e_t: " << e_t << " e_p: " << e_p << " force: " << value << std::endl;
+    if (state.angle > 2.61799388 && state.angle < 3.66519143){
+      value = 0.0;
+    }
+
     return value;
 }
 
@@ -91,6 +101,13 @@ void Control::PendulumCallback(const geometry_msgs::msg::Vector3 &msg) {
 void Control::CartCallback(const std_msgs::msg::Float32 &msg) {
   state_.position = msg.data;
 }
+
+template<typename T>
+int Control::GetSign(T value) {
+  return (T(0) < value) - (value < T(0));
+}
+
+
 
 // namespace ivp
 }

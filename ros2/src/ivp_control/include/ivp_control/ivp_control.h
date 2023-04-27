@@ -29,6 +29,7 @@ class Control : public rclcpp::Node {
   [[nodiscard]] bool NodeOk() const { return !stop_node_; }
  private:
   double SwingUp(const State &state);
+  template <typename T> int GetSign(T value);
  private:
   bool stop_node_;
   std::chrono::time_point<std::chrono::steady_clock> t_start_;
