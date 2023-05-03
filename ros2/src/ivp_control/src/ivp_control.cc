@@ -14,18 +14,20 @@ Control::~Control() {
 }
 
 bool Control::Configure() {
-  publisher_ = this->create_publisher<std_msgs::msg::Float32>("ivp/force_setpoint", rclcpp::SensorDataQoS());
+  publisher_ = this->create_publisher<std_msgs::msg::Float32>("force_setpoint", rclcpp::SensorDataQoS());
 
-  pendulum_subscription_ = this->create_subscription<geometry_msgs::msg::Vector3>("ivp/pendulum_state",
+  pendulum_subscription_ = this->create_subscription<geometry_msgs::msg::Vector3>("pendulum_state",
                                                                                   rclcpp::SensorDataQoS(),
                                                                                   std::bind(&Control::PendulumCallback,
                                                                                             this,
                                                                                             std::placeholders::_1));
-  cart_subscription_ = this->create_subscription<std_msgs::msg::Float32>("ivp/cart_position",
+  cart_subscription_ = this->create_subscription<std_msgs::msg::Float32>("cart_position",
                                                                          rclcpp::SensorDataQoS(),
                                                                          std::bind(&Control::CartCallback,
                                                                                    this,
                                                                                    std::placeholders::_1));
+
+  t_init_ = std::chrono::steady_clock::now();
 
   return true;
 }
@@ -73,22 +75,26 @@ double Control::SwingUp(const State &state) {
   double b_c = 0.095f;
   double e_t = 0.0f; //m_p * g * L_p;
   double pi = 3.14159265359;
+  auto time = std::chrono::steady_clock::now();
+  double elapsed = 0;
+  float value;
 
-  double angle = state.angle;
-  if(state.angle < 2*pi && state.angle >  2*pi - 0.5*pi){
-    angle = state.angle - 2*pi;
-  }
-  if(state.angle < 2*pi - 0.5*pi && state.angle > 2*pi - 1.5*pi ){
-    angle = state.angle - pi;
-  }
+//    e_p =  m_p * g * L_p * (cos(state.angle)-1);
+    e_p = 0.5*I_p*state.d_angle*state.d_angle + m_p * g * L_p * (cos(state.angle)-1);
+//    std::cout << "Cos: " << cos(state.angle) << " Angle: " << state.angle << std::endl;
+  value = (e_t - e_p) * state.d_angle * cos(state.angle)*5.5 + 0.78190158465*std::copysign(1.0, -state.d_angle);
+//    if (state.angle > pi/2 && state.angle < 3*pi/2){
+//      value = (e_t - e_p) * state.d_angle * cos(state.angle)*5.5 + 0.78190158465*std::copysign(1.0, state.d_angle);
+//    } else {
+//      value = (e_t - e_p) * state.d_angle * cos(state.angle)*5.5 + 0.78190158465*std::copysign(1.0, -state.d_angle);
+//    }
 
-    e_p = 0.5*I_p*state.d_angle*state.d_angle + m_p * g * L_p * (cos(angle));
-    std::cout << "Cos: " << cos(angle) << " Angle: " << angle << std::endl;
-    double value = (e_t - e_p) * state.d_angle * (cos(angle));
-    std::cout << "e_t: " << e_t << " e_p: " << e_p << " force: " << value << std::endl;
-    if (state.angle > 2.61799388 && state.angle < 3.66519143){
-      value = 0.0;
-    }
+
+//    value = 10*0.78190158465*std::copysign(1.0, state.d_angle);
+    std::cout << value << std::endl;
+//    std::cout << "e_t: " << e_t << " e_p: " << e_p << " force: " << value << std::endl;
+//    elapsed = std::chrono::duration_cast<std::chrono::duration<double>>( time - t_init_).count();
+//    value = static_cast<float>(1.f*sin(elapsed));
 
     return value;
 }

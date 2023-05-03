@@ -34,6 +34,7 @@ class Control : public rclcpp::Node {
   bool stop_node_;
   std::chrono::time_point<std::chrono::steady_clock> t_start_;
   std::chrono::time_point<std::chrono::steady_clock> t_end_;
+  std::chrono::time_point<std::chrono::steady_clock> t_init_;
   float kTimerSleep = 1.f / 100.f;
 
   std_msgs::msg::Float32 float_message_;
