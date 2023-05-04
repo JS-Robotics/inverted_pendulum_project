@@ -84,7 +84,7 @@ class Control(Node):
 
     def configure(self):
         self._torque_subscriber = self.create_subscription(Float32,
-                                                           'torque_setpoint',
+                                                           'force_setpoint',
                                                            self.torque_callback,
                                                            qos.qos_profile_sensor_data)
 
@@ -100,8 +100,9 @@ class Control(Node):
         self.cart_control.homing()
         self.cart_control.set_torque_control()
 
-    def torque_callback(self, torque: Float32):
-        self.torque = -1 * torque.data  # -1 to make right direction positive
+    def torque_callback(self, force: Float32):
+        self.torque = -1 * force.data * self.effective_radius  # -1 to make right direction positive
+        self.get_logger().info(f"Received force input: {round(force.data,4)}, converted to Moment: {round(self.torque, 4)}")
         self.heart_beat = time.time()
 
     def set_state_idle(self):

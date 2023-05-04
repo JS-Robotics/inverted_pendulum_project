@@ -65,38 +65,30 @@ void Control::Publish(float force_setpoint) {
 }
 
 double Control::SwingUp(const State &state) {
-  double e_p = 0.0f;
-  double I_p = 0.00466;
-  double m_p = 0.071f;
-  double m_c = 0.288f;
-  double L_p = (0.685f - 0.246f);
-  double g = 9.81f;
-  double F_m = 0;
-  double b_c = 0.095f;
-  double e_t = 0.0f; //m_p * g * L_p;
-  double pi = 3.14159265359;
+  float e_p = 0.0f;
+  float I_p = 0.00466;
+  float m_p = 0.071f;
+  float m_c = 0.288f;
+  float L_p = (0.685f - 0.246f);
+  float g = 9.81f;
+  float F_m = 0;
+  float b_c = 0.095f;
+  float e_t = 0.0f; //m_p * g * L_p;
+  float pi = 3.14159265359;
   auto time = std::chrono::steady_clock::now();
-  double elapsed = 0;
+  float elapsed = 0;
   float value;
 
+//  elapsed = std::chrono::duration_cast<std::chrono::duration<double>>( time - t_init_).count();
+//  value = static_cast<float>(1*sin(elapsed)) + 2*0.78190158465*std::copysign(1.0, 1*sin(elapsed));
+
+
 //    e_p =  m_p * g * L_p * (cos(state.angle)-1);
-    e_p = 0.5*I_p*state.d_angle*state.d_angle + m_p * g * L_p * (cos(state.angle)-1);
-//    std::cout << "Cos: " << cos(state.angle) << " Angle: " << state.angle << std::endl;
-  value = (e_t - e_p) * state.d_angle * cos(state.angle)*5.5 + 0.78190158465*std::copysign(1.0, -state.d_angle);
-//    if (state.angle > pi/2 && state.angle < 3*pi/2){
-//      value = (e_t - e_p) * state.d_angle * cos(state.angle)*5.5 + 0.78190158465*std::copysign(1.0, state.d_angle);
-//    } else {
-//      value = (e_t - e_p) * state.d_angle * cos(state.angle)*5.5 + 0.78190158465*std::copysign(1.0, -state.d_angle);
-//    }
+  e_p = 0.5f * I_p * state.d_angle * state.d_angle + m_p * g * L_p * (cos(state.angle) - 1);
 
-
-//    value = 10*0.78190158465*std::copysign(1.0, state.d_angle);
-    std::cout << value << std::endl;
-//    std::cout << "e_t: " << e_t << " e_p: " << e_p << " force: " << value << std::endl;
-//    elapsed = std::chrono::duration_cast<std::chrono::duration<double>>( time - t_init_).count();
-//    value = static_cast<float>(1.f*sin(elapsed));
-
-    return value;
+  value = (e_t - e_p) * state.d_angle * cos(state.angle) * 30.0 + 2.0*0.78190158465 * std::copysign(1.0, -state.d_angle);
+  std::cout << value << std::endl;
+  return value;
 }
 
 void Control::PendulumCallback(const geometry_msgs::msg::Vector3 &msg) {
