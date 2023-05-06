@@ -157,3 +157,10 @@ class CartControl:
         :return: Current number of turns [turns]
         """
         return self.drive.axis0.encoder.pos_estimate
+
+    def get_estimated_vel(self):
+        """
+        Get the estimated velocity in number of turns per seconds
+        :return: Current turns velocity [turns/s]
+        """
+        return self.drive.axis0.encoder.vel_estimate

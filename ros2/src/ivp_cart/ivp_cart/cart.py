@@ -5,6 +5,7 @@ from rclpy.node import Node
 from rclpy import qos
 from std_msgs.msg import Float32
 from std_msgs.msg import UInt8
+from geometry_msgs.msg import Vector3
 
 # from ivp_cart.odrive_interface import CartControl
 from ivp_cart.odrive_interface import CartControl
@@ -26,7 +27,7 @@ class Control(Node):
         self._torque_subscriber: rclpy.node.Subscription = None
         self._turn_publisher: rclpy.node.Publisher = None
         self._status_publisher: rclpy.node.Publisher = None
-        self.turn_message: Float32 = Float32()
+        self.cart_message: Vector3 = Vector3()
         self.torque = 0
         self.start_time = None
         self.end_time = None
@@ -45,10 +46,10 @@ class Control(Node):
 
     def run_once(self):
         self.start_time = time.time()
-        # self.turn_message.data = 1.23
 
-        self.turn_message.data = -1 * self.cart_control.get_estimated_pos() * 2*self.effective_radius*self.pi  # -1 to make right positive direction, (Is also converted from turns to distance traveled: distance = pi*2r*turns) TODO Turn back for motor
-        self._turn_publisher.publish(self.turn_message)
+        self.cart_message.x = -1 * self.cart_control.get_estimated_pos() * 2*self.effective_radius*self.pi  # -1 to make right positive direction, (Is also converted from turns to distance traveled: distance = pi*2r*turns) TODO Turn back for motor
+        self.cart_message.y = -1 * self.cart_control.get_estimated_vel() * 2*self.effective_radius*self.pi
+        self._turn_publisher.publish(self.cart_message)
         duration = time.time() - self.heart_beat_threshold
         if duration > self.heart_beat:
             self.torque = 0
@@ -66,7 +67,7 @@ class Control(Node):
                 self._status_publisher.publish(message)
                 self.publish_state = False
 
-        if abs(self.turn_message.data) > self.soft_end_limit:  # Perform soft emergency stop check
+        if abs(self.cart_message.x) > self.soft_end_limit:  # Perform soft emergency stop check
             self.torque = 0
 
         self.cart_control.set_torque(self.torque)
@@ -88,7 +89,7 @@ class Control(Node):
                                                            self.torque_callback,
                                                            qos.qos_profile_sensor_data)
 
-        self._turn_publisher = self.create_publisher(Float32, 'cart_position', qos.qos_profile_sensor_data)
+        self._turn_publisher = self.create_publisher(Vector3, 'cart_state', qos.qos_profile_sensor_data)
         self._status_publisher = self.create_publisher(UInt8, 'status_cart', self.status_qos)
         self.heart_beat = time.time()  # Init timer on init in order to avoid None type error
         self.state = States.CONFIGURED
