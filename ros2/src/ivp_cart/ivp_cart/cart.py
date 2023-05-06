@@ -42,7 +42,7 @@ class Control(Node):
                                          durability=qos.QoSDurabilityPolicy.TRANSIENT_LOCAL)
         self.state: int = 0
         self.publish_state = False
-        self.soft_end_limit = 5.0  # 6
+        self.soft_end_limit = 0.30 #0.35  #5.0  # 6
 
     def run_once(self):
         self.start_time = time.time()
@@ -103,7 +103,7 @@ class Control(Node):
 
     def torque_callback(self, force: Float32):
         self.torque = -1 * force.data * self.effective_radius  # -1 to make right direction positive
-        self.get_logger().info(f"Received force input: {round(force.data,4)}, converted to Moment: {round(self.torque, 4)}")
+        # self.get_logger().info(f"Received force input: {round(force.data,4)}, converted to Moment: {round(self.torque, 4)}")
         self.heart_beat = time.time()
 
     def set_state_idle(self):

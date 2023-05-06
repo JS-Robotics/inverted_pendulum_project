@@ -34,14 +34,10 @@ bool Control::Configure() {
 
 void Control::RunOnce() {
   t_start_ = std::chrono::steady_clock::now();  //Begin execution timer
-  auto torque = static_cast<float>(SwingUp(state_));
-  Publish(torque);
-
-//  std::cout << "------------------------------------------------------------------" << std::endl;
-//  std::cout << "angle: " << state_.angle << std::endl;
-//  std::cout << "d_angle: " << state_.d_angle << std::endl;
-//  std::cout << "position: " << state_.position << std::endl;
-//  std::cout << "------------------------------------------------------------------" << std::endl;
+  float force = 0;
+  // force = SwingUp(state_);
+  force = Balancing(state_);
+  Publish(force);
 
 }
 
@@ -64,7 +60,7 @@ void Control::Publish(float force_setpoint) {
   publisher_->publish(float_message_);
 }
 
-double Control::SwingUp(const State &state) {
+float Control::SwingUp(const State &state) {
   float e_p = 0.0f;
   float I_p = 0.00466;
   float m_p = 0.071f;
@@ -86,9 +82,16 @@ double Control::SwingUp(const State &state) {
 //    e_p =  m_p * g * L_p * (cos(state.angle)-1);
   e_p = 0.5f * I_p * state.d_angle * state.d_angle + m_p * g * L_p * (cos(state.angle) - 1);
 
-  value = (e_t - e_p) * state.d_angle * cos(state.angle) * 30.0 + 2.0*0.78190158465 * std::copysign(1.0, -state.d_angle);
+  value = (e_t - e_p) * state.d_angle * cos(state.angle) * 30.0 + 2.0 * 0.78190158465 * std::copysign(1.0, -state.d_angle);
   std::cout << value << std::endl;
   return value;
+}
+
+float Control::Balancing(const State &state) {
+
+  // --> 2.5 N
+  // <-- -2.4 N
+  return 0;
 }
 
 void Control::PendulumCallback(const geometry_msgs::msg::Vector3 &msg) {

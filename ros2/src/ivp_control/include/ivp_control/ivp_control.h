@@ -28,7 +28,8 @@ class Control : public rclcpp::Node {
   void Publish(float force_setpoint);
   [[nodiscard]] bool NodeOk() const { return !stop_node_; }
  private:
-  double SwingUp(const State &state);
+  float SwingUp(const State &state);
+  float Balancing(const State &state);
   template <typename T> int GetSign(T value);
  private:
   bool stop_node_;
