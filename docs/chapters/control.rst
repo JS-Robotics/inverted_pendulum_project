@@ -45,11 +45,11 @@ This results in the following linearized equations of motion
 
 .. math::
 
-    \ddot{x}_{cx} = \frac{F_m - F_f + m_pL\ddot{\theta}}{m_p + m_c}
+    \ddot{x}_{cx} = \frac{F_m - b_c\dot{x}_{cx} + m_pL\ddot{\theta}}{m_p + m_c}
 
 .. math::
 
-    \ddot{\theta}  = \frac{-M_f + m_pL\ddot{x}_{cx} + m_pLg(\theta-\pi)}{I_p + m_pL^2}
+    \ddot{\theta}  = \frac{-b_p\dot{\theta} + m_pL\ddot{x}_{cx} + m_pLg(\theta-\pi)}{I_p + m_pL^2}
 
 In order to transform the equations of motion into a state space model in the form :math:`\mathbf{\dot x} = \mathbf{A x} + \mathbf{B u}`
 where
@@ -83,34 +83,43 @@ eliminated. This is achieved by substituting each of the equations into each oth
 
     \ddot{\theta}  = \frac{-b_p \dot\theta + m_pL(\frac{F_m - b_c\dot{x}_{cx} + m_pL\ddot{\theta}}{m_p + m_c}) + m_pLg(\theta-\pi)}{I_p + m_pL^2}
 
-Expanding and splitting
+TODO add solved eq2uation set
+
+This yields the following state space model
 
 .. math::
 
-    \ddot{x}_{cx} = \frac{F_m}{m_p + m_c} - \frac{b_c\dot{x}_{cx}}{m_p + m_c} + \frac{m_pL(\frac{-b_p \dot\theta + m_pL\ddot{x}_{cx} + m_pLg(\theta-\pi)}{I_p + m_pL^2})}{m_p + m_c}
+    \begin{bmatrix}
+    \dot{x}_{cx}   \\
+    \ddot{x}_{cx}  \\
+    \dot{\theta}   \\
+    \ddot{\theta}  \\
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+    0 & 1 & 0 & 0 \\
+    0 & \frac{-b_c(m_pL_p^2+I_p)}{{k}_{den}} & \frac{m_p^2L_p^2g}{{k}_{den}} & \frac{-b_pm_pL_p}{{k}_{den}}\\
+    0 & 0 & 0 & 1\\
+    0 & \frac{-b_cm_pL_p}{{k}_{den}} & \frac{m_pL_pg(m_c+m_p)}{{k}_{den}} & \frac{-b_p(m_c+m_p)}{{k}_{den}}
+    \end{bmatrix}
+    \begin{bmatrix}
+    {x}_{cx}        \\
+    \dot{x}_{cx}  \\
+    \theta        \\
+    \dot{\theta}  \\
+    \end{bmatrix}
+    +
+    \begin{bmatrix}
+    0 \\
+    \frac{m_pL_p^2+I_p}{{k}_{den}} \\
+    0 \\
+    \frac{m_pL_p}{{k}_{den}}
+    \end{bmatrix}
+    u(t)
+
+where
 
 .. math::
 
-    \ddot{\theta}  = \frac{-b_p \dot\theta + m_pL(\frac{F_m - b_c\dot{x}_{cx} + m_pL\ddot{\theta}}{m_p + m_c}) + m_pLg(\theta-\pi)}{I_p + m_pL^2}
+    {k}_{den} = (m_c+m_p)I_p+m_cm_pL_p^2
 
-2nd
-
-.. math::
-
-    \ddot{x}_{cx} = \frac{F_m}{m_p + m_c} - \frac{b_c\dot{x}_{cx}}{m_p + m_c} + \frac{-m_pLb_p \dot\theta+ m_p^2L^2\ddot{x}_{cx} + m_p^2L^2g(\theta-\pi)}{(m_p + m_c)(I_p + m_pL^2)}
-
-.. math::
-
-    \ddot{\theta}  = \frac{-b_p \dot\theta}{I_p + m_pL^2} + \frac{m_pLg(\theta-\pi)}{I_p + m_pL^2} + \frac{m_pLF_m - m_pLb_c\dot{x}_{cx} + m_p^2L^2\ddot{\theta}}{(m_p + m_c)(I_p + m_pL^2)}
-
-xdd
-
-.. math::
-
-    \ddot{x}_{cx} = \frac{F_m}{m_p + m_c} - \frac{b_c\dot{x}_{cx}}{m_p + m_c} + \frac{-m_pLb_p \dot\theta+ m_p^2L^2\ddot{x}_{cx} + m_p^2L^2g(\theta-\pi)}{(m_p + m_c)(I_p + m_pL^2)}
-
-asdsad
-
-.. math::
-
-    (m_p + m_c)(I_p + m_pL^2) = (m_p+m_c)I_p + m_cm_cL^2 + m_p^2L_p^2
