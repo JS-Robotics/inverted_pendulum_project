@@ -27,13 +27,15 @@ Publishes the current pendulum angular position and angular velocity.
 * QOS: :code:`rcl::SensorDataQoS`
 * Frequency: 50[Hz] - Period: 20[ms]
 
-cart_position
+cart_state
 --------------
 Publishes the current cart position from center.
 
 * Source type: :code:`PUBLISHER`
-* Message type: :code:`std_msgs/msg/Float32`
-* :code:`msg.data` = cart position :code:`[m]`
+* Message type: :code:`geometry_msgs/msg/Vector3`
+* :code:`msg.x` = cart position :code:`[m]`
+* :code:`msg.y` = cart velocity :code:`[m/s]`
+* :code:`msg.z` = Not in use :code:`[-]`
 * QOS: :code:`rcl::SensorDataQoS`
 * Frequency: 100[Hz] - Period: 10[ms]
 

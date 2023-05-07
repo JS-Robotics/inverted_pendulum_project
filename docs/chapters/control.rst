@@ -10,4 +10,107 @@ the pendulum, such as proportional-derivative (PD) control, linear-quadratic reg
 
 The LQR method will be explored and applied in this project to stabilize the inverted pendulum on a cart system.
 
+LQR
+-----
 
+Previously, the equations of motion where derived to the following for the cart and pendulum respectively:
+
+.. math::
+
+    \ddot{x}_{cx} = \frac{F_m - F_f - m_pL\ddot{\theta}\cos(\theta) + m_pL\dot{\theta}^2\sin(\theta)}{m_p + m_c}
+
+.. math::
+
+    \ddot{\theta}  = \frac{-M_f -m_pL\ddot{x}_{cx}\cos(\theta) - m_pLg\sin(\theta)}{I_p + m_pL^2}
+
+In order to apply the LQR technique, it is necessary to linearize the system equations. This is done by linearizing the
+equations around the vertically upward equilibrium point where :math:`\theta = \pi`, assuming that the system operates within
+a small deviation from this point. Let :math:`\phi` denote the deviation of the pendulum's position from equilibrium,
+such that :math:`\theta = \pi + \phi`. Given a small deviation from equilibrium, we can use the following small-angle
+approximations of the nonlinear functions in the system equations.
+
+.. math::
+
+    \cos(\theta) = \cos(\pi+\phi) \approx -1
+
+.. math::
+
+    \sin(\theta) = \sin(\pi+\phi) \approx -\phi
+
+.. math::
+
+    \dot\theta^2 = \dot\phi^2 \approx 0
+
+This results in the following linearized equations of motion
+
+.. math::
+
+    \ddot{x}_{cx} = \frac{F_m - F_f + m_pL\ddot{\theta}}{m_p + m_c}
+
+.. math::
+
+    \ddot{\theta}  = \frac{-M_f + m_pL\ddot{x}_{cx} + m_pLg(\theta-\pi)}{I_p + m_pL^2}
+
+In order to transform the equations of motion into a state space model in the form :math:`\mathbf{\dot x} = \mathbf{A x} + \mathbf{B u}`
+where
+
+.. math::
+
+    \mathbf{\dot x} = \begin{bmatrix}
+        \dot{x}_{cx} &
+        \ddot{x}_{cx} &
+        \dot \theta &
+        \ddot \theta
+    \end{bmatrix}^T
+
+.. math::
+
+    \mathbf{x} = \begin{bmatrix}
+            {x}_{cx} &
+            \dot{x}_{cx} &
+            \theta &
+            \dot \theta
+    \end{bmatrix}^T
+
+The :math:`\ddot\theta` and :math:`\ddot{x}_{cx}` on the right-hand side in each of the linearized equations of motion, has to be
+eliminated. This is achieved by substituting each of the equations into each other.
+
+.. math::
+
+    \ddot{x}_{cx} = \frac{F_m - b_c\dot{x}_{cx} + m_pL(\frac{-b_p \dot\theta + m_pL\ddot{x}_{cx} + m_pLg(\theta-\pi)}{I_p + m_pL^2})}{m_p + m_c}
+
+.. math::
+
+    \ddot{\theta}  = \frac{-b_p \dot\theta + m_pL(\frac{F_m - b_c\dot{x}_{cx} + m_pL\ddot{\theta}}{m_p + m_c}) + m_pLg(\theta-\pi)}{I_p + m_pL^2}
+
+Expanding and splitting
+
+.. math::
+
+    \ddot{x}_{cx} = \frac{F_m}{m_p + m_c} - \frac{b_c\dot{x}_{cx}}{m_p + m_c} + \frac{m_pL(\frac{-b_p \dot\theta + m_pL\ddot{x}_{cx} + m_pLg(\theta-\pi)}{I_p + m_pL^2})}{m_p + m_c}
+
+.. math::
+
+    \ddot{\theta}  = \frac{-b_p \dot\theta + m_pL(\frac{F_m - b_c\dot{x}_{cx} + m_pL\ddot{\theta}}{m_p + m_c}) + m_pLg(\theta-\pi)}{I_p + m_pL^2}
+
+2nd
+
+.. math::
+
+    \ddot{x}_{cx} = \frac{F_m}{m_p + m_c} - \frac{b_c\dot{x}_{cx}}{m_p + m_c} + \frac{-m_pLb_p \dot\theta+ m_p^2L^2\ddot{x}_{cx} + m_p^2L^2g(\theta-\pi)}{(m_p + m_c)(I_p + m_pL^2)}
+
+.. math::
+
+    \ddot{\theta}  = \frac{-b_p \dot\theta}{I_p + m_pL^2} + \frac{m_pLg(\theta-\pi)}{I_p + m_pL^2} + \frac{m_pLF_m - m_pLb_c\dot{x}_{cx} + m_p^2L^2\ddot{\theta}}{(m_p + m_c)(I_p + m_pL^2)}
+
+xdd
+
+.. math::
+
+    \ddot{x}_{cx} = \frac{F_m}{m_p + m_c} - \frac{b_c\dot{x}_{cx}}{m_p + m_c} + \frac{-m_pLb_p \dot\theta+ m_p^2L^2\ddot{x}_{cx} + m_p^2L^2g(\theta-\pi)}{(m_p + m_c)(I_p + m_pL^2)}
+
+asdsad
+
+.. math::
+
+    (m_p + m_c)(I_p + m_pL^2) = (m_p+m_c)I_p + m_cm_cL^2 + m_p^2L_p^2
