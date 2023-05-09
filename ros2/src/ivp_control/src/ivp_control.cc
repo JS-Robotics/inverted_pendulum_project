@@ -2,8 +2,13 @@
 #include "ivp_control/ivp_control.h"
 #include <cmath>
 namespace ivp {
+
 Control::Control() : Node("IvpControlNode") {
   stop_node_ = false;
+  ref_.p_ref = 0;
+  ref_.v_ref = 0;
+  ref_.t_ref = kPi;
+  ref_.w_ref = 0;
   state_ = State{};
   std::cout << state_.angle << state_.d_angle << state_.position << state_.d_position << std::endl;
   std::cout << "Hello" << stop_node_ << std::endl;
@@ -82,7 +87,8 @@ float Control::SwingUp(const State &state) {
 //    e_p =  m_p * g * L_p * (cos(state.angle)-1);
   e_p = 0.5f * I_p * state.d_angle * state.d_angle + m_p * g * L_p * (cos(state.angle) - 1);
 
-  value = (e_t - e_p) * state.d_angle * cos(state.angle) * 30.0 + 2.0 * 0.78190158465 * std::copysign(1.0, -state.d_angle);
+  value =
+      (e_t - e_p) * state.d_angle * cos(state.angle) * 30.0 + 2.0 * 0.78190158465 * std::copysign(1.0, -state.d_angle);
   std::cout << value << std::endl;
   return value;
 }
@@ -91,7 +97,14 @@ float Control::Balancing(const State &state) {
 
   // --> 2.5 N
   // <-- -2.4 N
-  return 0;
+  float u_t = - feedback_gain_.k1 * (state.position - ref_.p_ref)
+      - feedback_gain_.k2 * (state.d_position - ref_.v_ref)
+      - feedback_gain_.k3 * (state.angle - ref_.t_ref)
+      - feedback_gain_.k4 * (state.d_angle - ref_.w_ref);
+
+  std::cout << "LQR input: " << u_t << std::endl;
+
+  return u_t;
 }
 
 void Control::PendulumCallback(const geometry_msgs::msg::Vector3 &msg) {

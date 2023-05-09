@@ -11,6 +11,20 @@
 
 namespace ivp {
 
+struct StateFeedbackGain{
+  float k1 = -1; //-3.16227766; //-31.622776;
+  float k2 = -1.53667584; //-34.01478446;
+  float k3 = 13.18171772; //23.9763163; //166.47118146;
+  float k4 = 2.99319516; //33.6406612;
+};
+
+struct SystemRef{
+  float p_ref{};
+  float v_ref{};
+  float t_ref{};
+  float w_ref{};
+};
+
 struct State {
   double angle;  // Angle
   double d_angle;  // Angular velocity
@@ -37,6 +51,7 @@ class Control : public rclcpp::Node {
   std::chrono::time_point<std::chrono::steady_clock> t_end_;
   std::chrono::time_point<std::chrono::steady_clock> t_init_;
   float kTimerSleep = 1.f / 100.f;
+  float kPi = 3.14159265359;
 
   std_msgs::msg::Float32 float_message_;
   rclcpp::Publisher<std_msgs::msg::Float32>::SharedPtr publisher_;
@@ -48,6 +63,9 @@ class Control : public rclcpp::Node {
   void CartCallback(const std_msgs::msg::Float32 &msg);
 
   ivp::State state_{};
+
+  SystemRef ref_;
+  StateFeedbackGain feedback_gain_;
 };
 
 // namespace ivp
