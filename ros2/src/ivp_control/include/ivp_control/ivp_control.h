@@ -12,10 +12,10 @@
 namespace ivp {
 
 struct StateFeedbackGain{
-  float k1 = -1; //-3.16227766; //-31.622776;
-  float k2 = -1.53667584; //-34.01478446;
-  float k3 = 13.18171772; //23.9763163; //166.47118146;
-  float k4 = 2.99319516; //33.6406612;
+  float k1 = -1.82574186; // -1.0;
+  float k2 = -2.43262666; // -1.53667584;
+  float k3 = 17.28282463; // 13.18171772;
+  float k4 = 3.86484981; // 2.99319516;
 };
 
 struct SystemRef{
@@ -59,8 +59,8 @@ class Control : public rclcpp::Node {
   rclcpp::Subscription<geometry_msgs::msg::Vector3>::SharedPtr pendulum_subscription_;
   void PendulumCallback(const geometry_msgs::msg::Vector3 &msg);
 
-  rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr cart_subscription_;
-  void CartCallback(const std_msgs::msg::Float32 &msg);
+  rclcpp::Subscription<geometry_msgs::msg::Vector3>::SharedPtr cart_subscription_;
+  void CartCallback(const geometry_msgs::msg::Vector3 &msg);
 
   ivp::State state_{};
 

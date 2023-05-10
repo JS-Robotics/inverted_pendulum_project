@@ -26,7 +26,7 @@ bool Control::Configure() {
                                                                                   std::bind(&Control::PendulumCallback,
                                                                                             this,
                                                                                             std::placeholders::_1));
-  cart_subscription_ = this->create_subscription<std_msgs::msg::Float32>("cart_position",
+  cart_subscription_ = this->create_subscription<geometry_msgs::msg::Vector3>("cart_state",
                                                                          rclcpp::SensorDataQoS(),
                                                                          std::bind(&Control::CartCallback,
                                                                                    this,
@@ -100,9 +100,13 @@ float Control::Balancing(const State &state) {
   float u_t = - feedback_gain_.k1 * (state.position - ref_.p_ref)
       - feedback_gain_.k2 * (state.d_position - ref_.v_ref)
       - feedback_gain_.k3 * (state.angle - ref_.t_ref)
-      - feedback_gain_.k4 * (state.d_angle - ref_.w_ref);
+      - feedback_gain_.k4 * (state.d_angle - ref_.w_ref)
+//      + 2*(0.015/0.019184) * copysign(1.0, state.d_position);
+      + 2*(0.015/0.019184) * std::tanh(75 * state.d_position);
+//      + 0.019184/(2*0.015) * std::tanh(50 * state.d_position);
 
-  std::cout << "LQR input: " << u_t << std::endl;
+//  std::cout << "LQR input: " << u_t << std::endl;
+//  std::cout << "Angle: " << state_.angle << " W: " << state_.d_angle << " Pos: " << state_.position << " Vel: " << state_.d_position << std::endl;
 
   return u_t;
 }
@@ -112,8 +116,9 @@ void Control::PendulumCallback(const geometry_msgs::msg::Vector3 &msg) {
   state_.d_angle = msg.y;
 }
 
-void Control::CartCallback(const std_msgs::msg::Float32 &msg) {
-  state_.position = msg.data;
+void Control::CartCallback(const geometry_msgs::msg::Vector3 &msg) {
+  state_.position = msg.x;
+  state_.d_position = msg.y;
 }
 
 template<typename T>

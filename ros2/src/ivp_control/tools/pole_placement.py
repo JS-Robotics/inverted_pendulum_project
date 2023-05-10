@@ -38,7 +38,7 @@ def generate_state_space():
         [0, 0, 100, 0],
         [0, 0, 0, 1]
     ])
-    R = 10
+    R = 3
     # R = 0.01
 
     K, S, E = control.lqr(A, B, Q, R)
