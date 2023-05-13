@@ -7,7 +7,7 @@ def generate_state_space():
     g = 9.81
     m_p = 0.071
     m_c = 0.288
-    b_c = 0.095
+    b_c = 0.155  # better 0.25  # good: 0.55 # 0.095
     b_p = 0.00112297
     l_p = (0.685 - 0.246)
     i_p = 0.00466
@@ -38,7 +38,7 @@ def generate_state_space():
         [0, 0, 100, 0],
         [0, 0, 0, 1]
     ])
-    R = 3
+    R = 0.5 #3
     # R = 0.01
 
     K, S, E = control.lqr(A, B, Q, R)

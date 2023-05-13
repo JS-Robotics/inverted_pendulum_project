@@ -40,8 +40,15 @@ bool Control::Configure() {
 void Control::RunOnce() {
   t_start_ = std::chrono::steady_clock::now();  //Begin execution timer
   float force = 0;
+  if(state_.angle == 0 && state_.d_angle == 0){
+    force = 0;
+  } else {
+    force = Balancing(state_);
+  }
+//  if(state_.angle > 1.74533 || state_.angle < 1.39626){
+//    force = 0;
+//  }
   // force = SwingUp(state_);
-  force = Balancing(state_);
   Publish(force);
 
 }
@@ -94,20 +101,33 @@ float Control::SwingUp(const State &state) {
 }
 
 float Control::Balancing(const State &state) {
-
+//  ref_.t_ref += 0.0001f*state.d_position;
+//  std::cout << ref_.t_ref << std::endl;
   // --> 2.5 N
   // <-- -2.4 N
   float u_t = - feedback_gain_.k1 * (state.position - ref_.p_ref)
       - feedback_gain_.k2 * (state.d_position - ref_.v_ref)
       - feedback_gain_.k3 * (state.angle - ref_.t_ref)
-      - feedback_gain_.k4 * (state.d_angle - ref_.w_ref)
-//      + 2*(0.015/0.019184) * copysign(1.0, state.d_position);
-      + 2*(0.015/0.019184) * std::tanh(75 * state.d_position);
+      - feedback_gain_.k4 * (state.d_angle - ref_.w_ref);
+  if(u_t != 0){
+    u_t += 1.65f * copysign(1.0, u_t);
+//    u_t += 1.9f * copysign(1.0, u_t);
+  }
+//      + 3.0 * std::tanh(100 * state.d_position);
 //      + 0.019184/(2*0.015) * std::tanh(50 * state.d_position);
 
 //  std::cout << "LQR input: " << u_t << std::endl;
 //  std::cout << "Angle: " << state_.angle << " W: " << state_.d_angle << " Pos: " << state_.position << " Vel: " << state_.d_position << std::endl;
 
+  if(std::abs(u_t) > 10.0f){
+    if(u_t < 0){
+      u_t = -10.0f;
+    } else {
+      u_t = 10.0f;
+    }
+  }
+  std::cout << u_t << std::endl;
+//  u_t = 0;
   return u_t;
 }
 
