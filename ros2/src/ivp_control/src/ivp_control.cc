@@ -101,7 +101,7 @@ float Control::SwingUp(const State &state) {
 }
 
 float Control::Balancing(const State &state) {
-//  ref_.t_ref += 0.0001f*state.d_position;
+//  ref_.t_ref += 0.005f*state.d_position;
 //  std::cout << ref_.t_ref << std::endl;
   // --> 2.5 N
   // <-- -2.4 N
@@ -109,21 +109,23 @@ float Control::Balancing(const State &state) {
       - feedback_gain_.k2 * (state.d_position - ref_.v_ref)
       - feedback_gain_.k3 * (state.angle - ref_.t_ref)
       - feedback_gain_.k4 * (state.d_angle - ref_.w_ref);
-  if(u_t != 0){
-    u_t += 1.65f * copysign(1.0, u_t);
-//    u_t += 1.9f * copysign(1.0, u_t);
-  }
-//      + 3.0 * std::tanh(100 * state.d_position);
-//      + 0.019184/(2*0.015) * std::tanh(50 * state.d_position);
+//    u_t += 1.8f * std::tanh(100 * state.d_position);
+    if(std::abs(state.d_position) <= 0.0001 ){
+      u_t += 1.8f * copysign(1.0, u_t);
+    } else
+    {
+      u_t += 1.8f * std::tanh(75 * state.d_position);
+    }
+
 
 //  std::cout << "LQR input: " << u_t << std::endl;
 //  std::cout << "Angle: " << state_.angle << " W: " << state_.d_angle << " Pos: " << state_.position << " Vel: " << state_.d_position << std::endl;
 
-  if(std::abs(u_t) > 10.0f){
+  if(std::abs(u_t) > 20.0f){
     if(u_t < 0){
-      u_t = -10.0f;
+      u_t = -20.0f;
     } else {
-      u_t = 10.0f;
+      u_t = 20.0f;
     }
   }
   std::cout << u_t << std::endl;
