@@ -111,9 +111,9 @@ float Control::Balancing(const State &state) {
       - feedback_gain_.k4 * (state.d_angle - ref_.w_ref);
   double u_init = u_t;
 //  if (std::abs(state.d_position) <= 0.0005 && u_t < 0.01) {
-  if (std::abs(state.d_position) <= 0.005 && std::abs(u_t) >= 0.1) {
+  if (std::abs(state.d_position) <= 0.01 && std::abs(u_t) >= 1.15) {
 //  if (std::abs(u_t) > 0.35) {
-    u_t += 1.8 * copysign(1.0, u_t);
+    u_t += 2.0 * copysign(1.0, u_t);
   }
   else {
     u_t += 2.3 * std::tanh(100 * state.d_position);
