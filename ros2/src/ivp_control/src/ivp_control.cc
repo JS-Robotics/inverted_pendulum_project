@@ -27,10 +27,10 @@ bool Control::Configure() {
                                                                                             this,
                                                                                             std::placeholders::_1));
   cart_subscription_ = this->create_subscription<geometry_msgs::msg::Vector3>("cart_state",
-                                                                         rclcpp::SensorDataQoS(),
-                                                                         std::bind(&Control::CartCallback,
-                                                                                   this,
-                                                                                   std::placeholders::_1));
+                                                                              rclcpp::SensorDataQoS(),
+                                                                              std::bind(&Control::CartCallback,
+                                                                                        this,
+                                                                                        std::placeholders::_1));
 
   t_init_ = std::chrono::steady_clock::now();
 
@@ -40,7 +40,7 @@ bool Control::Configure() {
 void Control::RunOnce() {
   t_start_ = std::chrono::steady_clock::now();  //Begin execution timer
   float force = 0;
-  if(state_.angle == 0 && state_.d_angle == 0){
+  if (state_.angle == 0 && state_.d_angle == 0) {
     force = 0;
   } else {
     force = Balancing(state_);
@@ -101,36 +101,39 @@ float Control::SwingUp(const State &state) {
 }
 
 float Control::Balancing(const State &state) {
-//  ref_.t_ref += 0.005f*state.d_position;
+  ref_.t_ref += 0.0001f * state.d_position;
 //  std::cout << ref_.t_ref << std::endl;
   // --> 2.5 N
   // <-- -2.4 N
-  float u_t = - feedback_gain_.k1 * (state.position - ref_.p_ref)
+  double u_t = -feedback_gain_.k1 * (state.position - ref_.p_ref)
       - feedback_gain_.k2 * (state.d_position - ref_.v_ref)
       - feedback_gain_.k3 * (state.angle - ref_.t_ref)
       - feedback_gain_.k4 * (state.d_angle - ref_.w_ref);
-//    u_t += 1.8f * std::tanh(100 * state.d_position);
-    if(std::abs(state.d_position) <= 0.0001 ){
-      u_t += 1.8f * copysign(1.0, u_t);
-    } else
-    {
-      u_t += 1.8f * std::tanh(75 * state.d_position);
-    }
+  double u_init = u_t;
+//  if (std::abs(state.d_position) <= 0.0005 && u_t < 0.01) {
+  if (std::abs(state.d_position) <= 0.005 && std::abs(u_t) >= 0.1) {
+//  if (std::abs(u_t) > 0.35) {
+    u_t += 1.8 * copysign(1.0, u_t);
+  }
+  else {
+    u_t += 2.3 * std::tanh(100 * state.d_position);
+  }
 
-
-//  std::cout << "LQR input: " << u_t << std::endl;
-//  std::cout << "Angle: " << state_.angle << " W: " << state_.d_angle << " Pos: " << state_.position << " Vel: " << state_.d_position << std::endl;
-
-  if(std::abs(u_t) > 20.0f){
-    if(u_t < 0){
+  if (std::abs(u_t) > 20.0f) {
+    if (u_t < 0) {
       u_t = -20.0f;
     } else {
       u_t = 20.0f;
     }
   }
-  std::cout << u_t << std::endl;
-//  u_t = 0;
-  return u_t;
+
+  std::cout << "Compensated F:"<< u_t << "  -  Original F:" << u_init << std::endl;
+
+//  if(state.angle >= 2.0944 || state.angle <= 1.0472){
+//    u_t = 0;
+//  }
+
+  return static_cast<float>(u_t);
 }
 
 void Control::PendulumCallback(const geometry_msgs::msg::Vector3 &msg) {
