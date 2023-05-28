@@ -101,7 +101,7 @@ float Control::SwingUp(const State &state) {
 }
 
 float Control::Balancing(const State &state) {
-  ref_.t_ref += 0.0001f * state.d_position;
+  ref_.t_ref += 0.000001f * state.d_position;
 //  std::cout << ref_.t_ref << std::endl;
   // --> 2.5 N
   // <-- -2.4 N
@@ -111,9 +111,9 @@ float Control::Balancing(const State &state) {
       - feedback_gain_.k4 * (state.d_angle - ref_.w_ref);
   double u_init = u_t;
 //  if (std::abs(state.d_position) <= 0.0005 && u_t < 0.01) {
-  if (std::abs(state.d_position) <= 0.01 && std::abs(u_t) >= 1.15) {
+  if (std::abs(state.d_position) <= 0.05 && std::abs(u_t) >= 0.025) {
 //  if (std::abs(u_t) > 0.35) {
-    u_t += 2.0 * copysign(1.0, u_t);
+    u_t += 1.55 * copysign(1.0, u_t);
   }
   else {
     u_t += 2.3 * std::tanh(100 * state.d_position);
