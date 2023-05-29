@@ -9,6 +9,7 @@ Control::Control() : Node("IvpControlNode") {
   ref_.v_ref = 0;
   ref_.t_ref = kPi;
   ref_.w_ref = 0;
+  angle_swing_up_old = 0;
   state_ = State{};
   std::cout << state_.angle << state_.d_angle << state_.position << state_.d_position << std::endl;
   std::cout << "Hello" << stop_node_ << std::endl;
@@ -39,16 +40,17 @@ bool Control::Configure() {
 
 void Control::RunOnce() {
   t_start_ = std::chrono::steady_clock::now();  //Begin execution timer
-  float force = 0;
+  float force;
   if (state_.angle == 0 && state_.d_angle == 0) {
     force = 0;
   } else {
-    force = Balancing(state_);
+    force = SwingUp(state_);
+//    force = Balancing(state_);
   }
 //  if(state_.angle > 1.74533 || state_.angle < 1.39626){
 //    force = 0;
 //  }
-  // force = SwingUp(state_);
+
   Publish(force);
 
 }
@@ -73,31 +75,45 @@ void Control::Publish(float force_setpoint) {
 }
 
 float Control::SwingUp(const State &state) {
-  float e_p = 0.0f;
-  float I_p = 0.00466;
-  float m_p = 0.071f;
-  float m_c = 0.288f;
-  float L_p = (0.685f - 0.246f);
-  float g = 9.81f;
-  float F_m = 0;
-  float b_c = 0.095f;
-  float e_t = 0.0f; //m_p * g * L_p;
-  float pi = 3.14159265359;
+  double e_p = 0.0f;
+  double I_p = 0.00466;
+  double m_p = 0.071f;
+  double m_c = 0.288f;
+  double L_p = (0.685f - 0.246f);
+  double g = 9.81f;
+  double F_m = 0;
+  double b_c = 0.095f;
+  double e_t = 0.0f; //m_p * g * L_p;
+  double pi = 3.14159265359;
   auto time = std::chrono::steady_clock::now();
   float elapsed = 0;
-  float value;
+  double u_t;
 
 //  elapsed = std::chrono::duration_cast<std::chrono::duration<double>>( time - t_init_).count();
-//  value = static_cast<float>(1*sin(elapsed)) + 2*0.78190158465*std::copysign(1.0, 1*sin(elapsed));
+//  u_t = static_cast<float>(1*sin(elapsed)) + 2*0.78190158465*std::copysign(1.0, 1*sin(elapsed));
 
 
-//    e_p =  m_p * g * L_p * (cos(state.angle)-1);
-  e_p = 0.5f * I_p * state.d_angle * state.d_angle + m_p * g * L_p * (cos(state.angle) - 1);
+    e_p =  m_p * g * L_p * (cos(state.angle)-1);
+//  e_p = 0.5f * I_p * state.d_angle * state.d_angle + m_p * g * L_p * (cos(state.angle) - 1);
 
-  value =
-      (e_t - e_p) * state.d_angle * cos(state.angle) * 30.0 + 2.0 * 0.78190158465 * std::copysign(1.0, -state.d_angle);
-  std::cout << value << std::endl;
-  return value;
+  u_t = (e_t - e_p) * state.d_angle * cos(state.angle)*30;
+//  std::cout << u_t << std::endl;
+
+  if(std::abs(state.angle-angle_swing_up_old) > kPi/4){
+    std::cout << "FLIP OVER- diff: " << std::abs(state.angle-angle_swing_up_old) << " angle: " << state.angle << " d_angle: " << state.d_angle << std::endl;
+
+    u_t = 0;
+  }
+  angle_swing_up_old = state.angle;
+
+  if (std::abs(u_t) > 20.0f) {
+    if (u_t < 0) {
+      u_t = -20.0f;
+    } else {
+      u_t = 20.0f;
+    }
+  }
+  return static_cast<float>(u_t);
 }
 
 float Control::Balancing(const State &state) {

@@ -52,6 +52,7 @@ class Control : public rclcpp::Node {
   std::chrono::time_point<std::chrono::steady_clock> t_init_;
   float kTimerSleep = 1.f / 100.f;
   float kPi = 3.14159265359;
+  double angle_swing_up_old;
 
   std_msgs::msg::Float32 float_message_;
   rclcpp::Publisher<std_msgs::msg::Float32>::SharedPtr publisher_;
