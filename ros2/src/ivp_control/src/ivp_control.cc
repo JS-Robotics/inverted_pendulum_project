@@ -9,7 +9,6 @@ Control::Control() : Node("IvpControlNode") {
   ref_.v_ref = 0;
   ref_.t_ref = kPi;
   ref_.w_ref = 0;
-  angle_swing_up_old = 0;
   state_ = State{};
   std::cout << state_.angle << state_.d_angle << state_.position << state_.d_position << std::endl;
   std::cout << "Hello" << stop_node_ << std::endl;
@@ -85,26 +84,40 @@ float Control::SwingUp(const State &state) {
   double b_c = 0.095f;
   double e_t = 0.0f; //m_p * g * L_p;
   double pi = 3.14159265359;
+  double b_p = 0.00112297;
   auto time = std::chrono::steady_clock::now();
   float elapsed = 0;
   double u_t;
+  double SetPoint;
 
-//  elapsed = std::chrono::duration_cast<std::chrono::duration<double>>( time - t_init_).count();
-//  u_t = static_cast<float>(1*sin(elapsed)) + 2*0.78190158465*std::copysign(1.0, 1*sin(elapsed));
+  if (state.angle > kPi/10 && state.angle < kPi && state.d_angle < 0.0) {
+    SetPoint = -0.235f;
+  } else if (state.angle >= 2.0*kPi- kPi/10 && state.angle > kPi && state.d_angle > 0.0) {
+    SetPoint = 0.235;
+  }
+  else  {
+    SetPoint = state.position;
+  }
 
+//  e_p =  m_p * g * L_p * (cos(state.angle)-1);
+  e_p = 0.5f * I_p * state.d_angle * state.d_angle + m_p * g * L_p * (cos(state.angle) - 1);
 
-    e_p =  m_p * g * L_p * (cos(state.angle)-1);
-//  e_p = 0.5f * I_p * state.d_angle * state.d_angle + m_p * g * L_p * (cos(state.angle) - 1);
+  double Error = SetPoint - state.position;
+  Error = Error*10000;
 
-  u_t = (e_p - e_t) * state.d_angle * cos(state.angle)*30;
-//  std::cout << u_t << std::endl;
+//  float u = (e_t - e_p)*ThetaDot*cos(state.angle)*0.195;
+//  if (state.angle > kPi - 1.5 && state.angle < kPi + 1.5) {
+  if (cos(state.angle) > 0.75 && cos(state.angle) < 0.95) {
+    u_t = Error*(e_t-e_p);
+    std::cout << u_t << std::endl;
+    u_t += 2.3 * copysign(1.0, u_t);
+  } else {
 
-//  if(std::abs(state.angle-angle_swing_up_old) > kPi/4){
-//    std::cout << "FLIP OVER- diff: " << std::abs(state.angle-angle_swing_up_old) << " angle: " << state.angle << " d_angle: " << state.d_angle << std::endl;
-//
-//    u_t = 0;
-//  }
-  angle_swing_up_old = state.angle;
+    u_t = 0;
+    std::cout << u_t << std::endl;
+  }
+//  u_t = -0.1f * state.d_angle * state.angle * (e_t - e_p);
+
 
   if (std::abs(u_t) > 20.0f) {
     if (u_t < 0) {
@@ -113,6 +126,8 @@ float Control::SwingUp(const State &state) {
       u_t = 20.0f;
     }
   }
+//  u_t = 0;
+//  std::cout << "sin: " << sin(state.angle) << " cos: " << cos(state.angle) << std::endl;
   return static_cast<float>(u_t);
 }
 
@@ -130,8 +145,7 @@ float Control::Balancing(const State &state) {
   if (std::abs(state.d_position) <= 0.05 && std::abs(u_t) >= 0.01) {
 //  if (std::abs(u_t) > 0.35) {
     u_t += 1.7 * copysign(1.0, u_t);
-  }
-  else {
+  } else {
     u_t += 2.3 * std::tanh(100 * state.d_position);
   }
 
@@ -143,7 +157,7 @@ float Control::Balancing(const State &state) {
     }
   }
 
-  std::cout << "Compensated F:"<< u_t << "  -  Original F:" << u_init << std::endl;
+  std::cout << "Compensated F:" << u_t << "  -  Original F:" << u_init << std::endl;
 
 //  if(state.angle >= 2.0944 || state.angle <= 1.0472){
 //    u_t = 0;
