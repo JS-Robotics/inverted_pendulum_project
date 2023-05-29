@@ -94,8 +94,8 @@ float Control::SwingUp(const State &state) {
   e_p = 0.5f * I_p * state.d_angle * state.d_angle - m_p * g * L_p * cos(state.angle);
   u_t = 0;
 
-  if (cos(state.angle) > 0.8) {
-    u_t = (e_p - e_t) * state.d_angle * cos(state.angle) * 2.155;
+  if (cos(state.angle) > 0.6) {
+    u_t = (e_p - e_t) * state.d_angle * cos(state.angle) * 2.2;
   }
 
   std::cout << u_t << "  --  energy: " << (e_t - e_p) << std::endl;
@@ -130,18 +130,18 @@ float Control::Balancing(const State &state) {
 //  if (std::abs(state.d_position) <= 0.0005 && u_t < 0.01) {
   if (std::abs(state.d_position) <= 0.05 && std::abs(u_t) >= 0.01) {
 //  if (std::abs(u_t) > 0.35) {
-    u_t += 2.1 * copysign(1.0, u_t);
+    u_t += 3.0 * copysign(1.0, u_t);
 //    u_t += 2.0 * copysign(1.0, u_t);
   } else {
-    u_t += 2.6 * std::tanh(100 * state.d_position);
+    u_t += 3.4 * std::tanh(100 * state.d_position);
 //    u_t += 2.5 * std::tanh(100 * state.d_position);
   }
 
-  if (std::abs(u_t) > 25.0f) {
+  if (std::abs(u_t) > 30.0f) {
     if (u_t < 0) {
-      u_t = -25.0f;
+      u_t = -30.0f;
     } else {
-      u_t = 25.0f;
+      u_t = 30.0f;
     }
   }
 
