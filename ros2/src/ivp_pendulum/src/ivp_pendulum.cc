@@ -59,10 +59,12 @@ void Pendulum::RunOnce() {
       } else {
         vel = ((pos - 2.f * kPi) - pos_old_) / dt_;
       }
+      pos_filtered_ = pos;
     } else {
       vel = (pos - pos_old_) / dt_;
+      pos_filtered_ = PendulumConfig::alpha * pos + ((1 - PendulumConfig::alpha) * pos_filtered_);
     }
-    pos_filtered_ = PendulumConfig::alpha * pos + ((1 - PendulumConfig::alpha) * pos_filtered_);
+//    pos_filtered_ = PendulumConfig::alpha * pos + ((1 - PendulumConfig::alpha) * pos_filtered_);
     vel_filtered_ = PendulumConfig::alpha * vel + ((1 - PendulumConfig::alpha) * vel_filtered_);
     message_.x = -1.f * pos_filtered_ + (2.f * kPi); // -1 and 2pi to Make CCW positive direction
     message_.y = -1.f * vel_filtered_; // -1 to Make CCW positive direction

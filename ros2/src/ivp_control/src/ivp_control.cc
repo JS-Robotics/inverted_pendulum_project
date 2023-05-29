@@ -96,14 +96,14 @@ float Control::SwingUp(const State &state) {
     e_p =  m_p * g * L_p * (cos(state.angle)-1);
 //  e_p = 0.5f * I_p * state.d_angle * state.d_angle + m_p * g * L_p * (cos(state.angle) - 1);
 
-  u_t = (e_t - e_p) * state.d_angle * cos(state.angle)*30;
+  u_t = (e_p - e_t) * state.d_angle * cos(state.angle)*30;
 //  std::cout << u_t << std::endl;
 
-  if(std::abs(state.angle-angle_swing_up_old) > kPi/4){
-    std::cout << "FLIP OVER- diff: " << std::abs(state.angle-angle_swing_up_old) << " angle: " << state.angle << " d_angle: " << state.d_angle << std::endl;
-
-    u_t = 0;
-  }
+//  if(std::abs(state.angle-angle_swing_up_old) > kPi/4){
+//    std::cout << "FLIP OVER- diff: " << std::abs(state.angle-angle_swing_up_old) << " angle: " << state.angle << " d_angle: " << state.d_angle << std::endl;
+//
+//    u_t = 0;
+//  }
   angle_swing_up_old = state.angle;
 
   if (std::abs(u_t) > 20.0f) {
